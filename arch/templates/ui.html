@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coherence Detection Tool</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/forms"></script>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  body {
+    font-family: 'Open Sans', sans-serif;
+  }
+  .funny-logo {
+    background-image: url('https://source.unsplash.com/featured/?funny');
+    background-size: cover;
+    background-position: center;
+    height: 100px;
+    width: 100px;
+  }
+  .coherence-icon {
+    font-size: 2rem;
+  }
+  /* CSS for selected profile */
+  .profile-button.selected {
+    background-color: #4CAF50; /* Change the background color to green */
+    color: white; /* Change the text color to white */
+  }
+</style>
+</head>
+<body class="bg-white text-gray-800">
+
+<div class="flex flex-col items-center justify-center min-h-screen p-4">
+  <header class="text-2xl font-bold text-green-500 mb-8">
+    <div class="funny-logo rounded-full mb-4"></div>
+    Coherence Assistant
+  </header>
+
+  <div class="w-full max-w-4xl bg-gray-100 p-6 rounded-lg shadow-lg">
+    <div class="flex justify-between items-center mb-4">
+      <h1 class="text-xl font-semibold">POTUS</h1>
+      <button id="toggleSidebar" class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 focus:outline-none">
+        Add
+      </button>
+    </div>
+
+    <form id="coherenceForm" method="post" enctype="application/json">
+      <input type="hidden" name="api_key" value="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">
+      <textarea id="writingZone" class="form-textarea w-full mb-4 p-2 border rounded" rows="6" placeholder="Writing zone..."></textarea>
+      <button id="submitText" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none">
+        Submit
+      </button>
+    </form>
+    
+    <div class="mt-4">
+      <h2 class="font-semibold mb-2">Coherence</h2>
+      <div id="recommendZone" class="p-4 bg-gray-200 rounded flex items-center">
+        <span class="coherence-icon mr-2">😂</span>
+        <span>Recommend zone...</span>
+      </div>
+    </div>
+    
+    <div class="mt-4">
+      <h2 class="font-semibold mb-2">Suggestion</h2>
+      <div id="Recommendation" class="p-4 bg-gray-200 rounded">
+        <!-- Refined text will be displayed here -->
+      </div>
+    </div>
+  </div>
+
+  <div id="sidebar" class="fixed top-0 right-0 w-64 h-full bg-black text-white p-4 hidden">
+    <div class="flex flex-col items-center">
+      <h2 class="text-xl font-semibold mb-4">RPL</h2>
+      <div class="w-full mb-4">
+        <div class="flex items-center justify-between p-2 mb-2 rounded bg-gray-800 cursor-pointer profile-button" data-profile="Layman">
+          <span>Layman</span>
+          <span class="text-purple-400">🧐</span>
+        </div>
+        <div class="flex items-center justify-between p-2 mb-2 rounded bg-gray-800 cursor-pointer profile-button" data-profile="Jeremy">
+          <span>Jeremy</span>
+          <span class="text-purple-400">🧙‍♂️</span>
+        </div>
+        <div class="flex items-center justify-between p-2 mb-2 rounded bg-gray-800 cursor-pointer profile-button" data-profile="Danai">
+          <span>Danai</span>
+          <span class="text-yellow-400">🐱</span>
+        </div>
+        <div class="flex items-center justify-between p-2 mb-2 rounded bg-gray-800 cursor-pointer profile-button" data-profile="Simon">
+          <span>Simon</span>
+          <span class="text-green-400">👨‍🍳</span>
+        </div>
+        <div class="flex items-center justify-between p-2 mb-2 rounded bg-gray-800 cursor-pointer profile-button" data-profile="peer discovery">
+          <span>Peer Discovery</span>
+          <span class="text-purple-400">🧞‍♂️</span>
+        </div>
+      
+        <!-- Other reader profiles here -->
+      </div>
+      <div class="text-center text-gray-400">
+        ...
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+<script>
+    const toggleSidebar = document.getElementById('toggleSidebar');
+    const sidebar = document.getElementById('sidebar');
+    const writingZone = document.getElementById('writingZone');
+    const recommendZone = document.getElementById('recommendZone');
+    const Recommendation = document.getElementById('Recommendation');
+
+    toggleSidebar.addEventListener('click', () => {
+    sidebar.classList.toggle('hidden');
+    });
+
+    //small function by theirry
+   // async function logFetchResponse(){
+        //response = await fetch('http');
+        //console.log(response);
+    //}
+
+    //// Define a variable to keep track of the selected profile
+    let selectedProfile = null;
+
+    // Event listener for profile selection
+    document.querySelectorAll('.profile-button').forEach((button) => {
+      button.addEventListener('click', () => {
+        selectedProfile = button.getAttribute('data-profile');
+        // You can add visual cues or styling to indicate the selected profile, if needed
+      });
+    });
+
+    // Add an event listener to the form submission
+    document.getElementById('coherenceForm').addEventListener('submit', function (event) {
+    event.preventDefault(); // Prevent the default form submission behavior
+
+    const text = writingZone.value.trim();
+    if (text && selectedProfile) {
+        // Placeholder for coherence score logic
+        const coherenceScore = 'Coherence Score: 7/10';
+        recommendZone.innerHTML = `<span class="coherence-icon mr-2">😂</span>Based on the selected reader's profile, ${coherenceScore}`;
+
+        // Send a POST request to the Flask server
+
+        fetch('/api/coherence-analysis', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ txt: text, profile: selectedProfile}), // Send the user's input text // and the profile
+        })
+        .then((response) => {
+            if (!response.ok) {
+            throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then((data) => {
+            // Update the Recommendation section with the server's response
+            Recommendation.textContent = data.combinedOutput || "No suggestions received."; // Check if data.suggestions is defined
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            //Recommendation.textContent = "An error occurred: " + error.message; // Display a more detailed error message
+        });
+
+    
+          // Fetch Simon's merged abstracts when Simon profile is selected
+    if (selectedProfile === 'Simon') {
+      fetch('/merged-abstracts/simon')
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.text();
+        })
+        .then((data) => {
+          // Update the Recommendation section with Simon's merged abstracts
+          // Recommendation.textContent = data || "No merged abstracts available for Simon.";
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+          Recommendation.textContent = "An error occurred: " + error.message;
+        });
+    }
+  }
+});
+
+
+    document.addEventListener('click', (event) => {
+    if (!sidebar.contains(event.target) && !toggleSidebar.contains(event.target)) {
+        sidebar.classList.add('hidden');
+    }
+    });
+
+    // Event listener for profile selection
+    document.querySelectorAll('.profile-button').forEach((button) => {
+      button.addEventListener('click', () => {
+        // Remove "selected" class from all buttons
+        document.querySelectorAll('.profile-button').forEach((btn) => {
+          btn.classList.remove('selected');
+        });
+
+        // Add "selected" class to the clicked button
+        button.classList.add('selected');
+
+        selectedProfile = button.getAttribute('data-profile');
+      });
+    });
+
+</script>  
+
+</body>
+</html>
