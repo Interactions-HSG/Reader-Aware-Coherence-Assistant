@@ -5,7 +5,7 @@ from arch import *
 
 import os
 
-from .reader_profile import my_fetch
+from reader_profile import my_fetch
 
 
 

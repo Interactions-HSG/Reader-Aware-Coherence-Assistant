@@ -6,7 +6,7 @@ from arch import *
 import openai
 import os
 
-from .reader_profile import my_fetch
+from reader_profile import my_fetch
 
 
 if __name__ == '__main__':
