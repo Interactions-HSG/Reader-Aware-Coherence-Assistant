@@ -1,3 +1,4 @@
 .DS_Store
 TLCA.code-workspace
 launch_help.txt
+__pycache__/
