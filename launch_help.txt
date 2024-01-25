@@ -1,4 +1,4 @@
 Command line to launch the app:
 1. go to the app diretory
 2. launch the app with the following command line:
-Users/fat-garage/opt/anaconda3/bin/python app.py
+Users/fat-garage/opt/anaconda3/bin/python ./app.py
