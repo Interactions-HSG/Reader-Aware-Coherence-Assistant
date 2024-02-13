@@ -24,6 +24,10 @@ def my_newTest():
 @app.route('/newTest2')
 def my_newTest2():
         return render_template('ui_2.html')
+#create the route for a new form computing the score
+@app.route('/newTest3')
+def my_newTest3():
+        return render_template('ui_3.html')
 
 @app.route('/test', methods=['GET', 'POST'])
 def my_test():
@@ -51,7 +55,12 @@ def my_test():
 
     return "Invalid request"
 
- 
+#add a route for testing two functions for demo
+@app.route('/demo', methods=['GET', 'POST']) 
+def my_demo():
+    return render_template('demo.html')
+
+
 def import_main_execution():
     print('app_client imported')
 
