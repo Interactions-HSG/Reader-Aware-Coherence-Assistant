@@ -2,9 +2,10 @@
 #47299473(simon) 35278460(danai) 2191982532(jeremy)
 
 import requests
+import json
 import os
 
-API_KEY_GOOGLE_SCHOLAR = "GoycwKdjBJ7oPPSnBIOV498hMHCivpiU6BjQ5YbZ"
+API_KEY_GOOGLE_SCHOLAR = json.load(open('config.json'))["GOOGLE_SCHOLAR_API_KEY"]
 
 
 def retrieve_and_merge_abstracts(api_key, author_id):
@@ -97,10 +98,9 @@ def my_fetch(author_id):
 
 def main():
     # Example usage
-    api_key = "GoycwKdjBJ7oPPSnBIOV498hMHCivpiU6BjQ5YbZ"
     author_id = "2191982532"  # Replace with the actual author's ID
 
     # Retrieve and merge abstracts for the scientist's papers
-    retrieve_and_merge_abstracts(api_key, author_id)
+    retrieve_and_merge_abstracts(API_KEY_GOOGLE_SCHOLAR, author_id)
 
 if __name__ == '__main__': main()

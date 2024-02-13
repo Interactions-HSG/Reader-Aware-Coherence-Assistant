@@ -25,6 +25,10 @@ def my_newTest():
 def my_newTest2():
         return render_template('ui_2.html')
 
+@app.route('/')
+def main_page():
+        return render_template('ui_2.html')
+
 @app.route('/test', methods=['GET', 'POST'])
 def my_test():
     if request.method == 'GET':

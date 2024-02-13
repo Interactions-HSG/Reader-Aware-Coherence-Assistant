@@ -4,6 +4,7 @@
 from arch import *
 
 import openai
+import json
 import os
 
 from reader_profile import my_fetch
@@ -15,7 +16,8 @@ if __name__ == '__main__':
 
 
 # Configure your OpenAI API key
-api_key = "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"  # Replace with your actual API key
+
+api_key = json.load(open('config.json'))["CHATGPT_API_KEY"]  # Replace with your actual API key
 openai.api_key = api_key
 
 
