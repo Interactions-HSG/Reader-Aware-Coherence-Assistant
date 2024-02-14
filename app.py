@@ -4,11 +4,20 @@
 
 from arch import *
 
+import openai
+# Configure your OpenAI API key
+OPENAI_API_KEY = "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"  # Replace with your actual API key
+openai.api_key = OPENAI_API_KEY
+
+
 import os
 
 import app_server
 
 import app_client
+
+
+
 
 
 
