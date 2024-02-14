@@ -6,6 +6,7 @@ import os
 from reader_profile import my_fetch
 
 
+
 if __name__ == '__main__':
     app = Flask(__name__)
     CORS(app)
