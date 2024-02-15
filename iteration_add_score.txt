@@ -1,0 +1,47 @@
+#iteration - add a score to each clause in the input paragraph
+#develop the functionality
+we have an input paragraph
+we saperate an input paragraph into a list of clause (text.split)
+we need to define a score for a small text
+  we need to motivate the matrics
+    interface:provide all signatures(the name of functions and parameters) you need to compute the metrics
+  we need to compute a value
+  we transform the value into a score (ML:dimensionality reduction 10 to 2, plot, PCA)
+
+#integration/implementation into the current system
+modify the server - new responsibility (adding score)
+modify the client - ask the server for openai api; ask for annotation (requesting the score)
+
+metrics(motivate/find reference in the literature the choice)
+-contains terms in some domains
+-whether it has keywords (0 or 1)
+-it is said by gpt (option)
+
+-easy to implement
+  (more than 4+ character, belong to a domain's dictionary)
+  [AI, AGI, LLM,OpenAI]
+-base one(everyone develops once); good one
+-interesting results
+
+in implementation, openai result is not reliable, cannot reproduce
+if can use other metrix
+#another generative AI (more specified)/ midjournals is made to reponse images
+if you have the keywords, you can build context
+
+generate, nevigate, implement
+1) if i give you two words, generate a graph between two words -- lm ()
+consider the result is not a dead-end. find a dedicated ai.
+2) find algorithms(realiable) to nevigate the graph -- mapsec
+3) 
+
+next step: find a solution of sth what ai is not made for 
+potential solution: to create a prompt to ensure the formatted response (literature review)
+domain fine-tuned approaches: outperform gpt in terms of measurement
+reduce the domain to outperform
+
+read papers: write a review of papers (choices)
+more realistic one: propose a realistic metrix
+
+requirements: repoduceable results; else: if not repoduceable, find some way to get coherence results(not)
+
+
