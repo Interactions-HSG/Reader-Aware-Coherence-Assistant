@@ -49,9 +49,14 @@
     <form id="demo_form" method="post" enctype="application/json">
       <input type="hidden" name="api_key" value="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">
 
-      <input type="text" id="selected_demo" placeholder="write a demo"/><br />
-      <textarea id="txt_input" class="form-textarea w-full mb-4 p-2 border rounded" rows="3" placeholder="text input..."></textarea>
-      <input type="text" id="nb_of_words" value="100"/><br />
+      <label for='selected_demo'>Demo:</label><input type="text" id="selected_demo" placeholder="write a demo"/><br />
+      <label for='txt_input'>Text Input1:</label><br /><textarea id="txt_input" class="form-textarea w-full mb-4 p-2 border rounded" rows="3" placeholder="text input..."></textarea><br />
+      <label for='txt_input2'>Text Input2:</label><br /><textarea id="txt_input2" class="form-textarea w-full mb-4 p-2 border rounded" rows="3" placeholder="text input..."></textarea><br />
+
+      <label for='nb_of_words'>Number of Words:</label><input type="text" id="nb_of_words" value="100"/><br />
+      <label for='metric'>Metric:</label><input type="text" id="metric" value="coherence score"/><br />
+      <label for='scale'>Scale:</label><input type="text" id="scale" value="[-1,0,1]"/><br />
+
       <button id="submitText" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none">
         Submit
       </button>

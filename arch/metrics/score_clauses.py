@@ -5,12 +5,13 @@ import json
 import re  # Importing regular expressions for extracting the rating
 #Regular expressions are a powerful tool for processing text. They allow you to specify a pattern of text to search for, which can be used for various tasks such as finding specific strings, validating input formats, replacing parts of a string, splitting strings, and more.
 
-from . import gpt_score_metric, gpt_score2_metric
+from . import gpt_score_metric, gpt_score2_metric, gpt_coherence_score_metric
 
 
 #reduce dimentionality
 def dim_reduction_mean(ratings):
     arr = [x for x in ratings if x >= 0]
+    if len(arr)==0: return 0
     return sum(arr)/len(arr)
 
 def score_clauses(text, params = {}):
@@ -43,11 +44,14 @@ def score_clauses(text, params = {}):
 
         if 'ref_text'in params:
             ref_text = params['ref_text']
-            v=gpt_score2_metric.score(clause, ref_text, params['openai_api_key']) #putting the score in the vector
-            print(v)
+            #v=gpt_score2_metric.score(clause, ref_text, params['openai_api_key']) #putting the score in the vector
+            #print(v)
+            #ratings.append(v)
+        
+        if 'ref_text'in params:
+            ref_text = params['ref_text']
+            v=gpt_coherence_score_metric.score(clause,ref_text,params['openai_api_key'])  
             ratings.append(v)
-            
-
 
 
         # Store the rating in the dictionary

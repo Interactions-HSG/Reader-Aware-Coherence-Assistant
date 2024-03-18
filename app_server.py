@@ -75,8 +75,9 @@ def get_score():
 def my_demo_srv(): #new form with text area be selected_demo
     #check which demo we selected
     selected_demo = request.json.get('selected_demo')
-    param1 = request.json.get('param1')
-    param2 = request.json.get('param2')
+    param1 = request.json.get('param1') #input
+    param2 = request.json.get('param2') #nb_of_words
+
 
 
     response = ''
@@ -142,6 +143,40 @@ def my_demo_srv(): #new form with text area be selected_demo
                 "errOutput": "Error calling OpenAI API"
             })
 
+    elif selected_demo == 'ask measure':
+        #ask GPT to measure
+        param3 = request.json.get('param3') #input
+        metric = request.json.get('metric') #coherence score
+        scale = request.json.get('scale') #scale
+
+        # 3. Build the prompt and send it
+        try:
+            # build the prompt
+            prompt = f"Consider this list of keywords:{param1}\n Consider the paragraph:{param3}\n Return only a json structure with keywords as keys and the calculated {metric} as values within {scale}."
+            print(prompt)
+            # send the prompt to ChatGPT
+            response = openai.ChatCompletion.create(
+                model="gpt-3.5-turbo",
+                messages=[
+                    {"role": "system", "content": "You are an assistant for analyzing coherence."},
+                    {"role": "user", "content": prompt}
+                ],
+
+            )
+
+            # Extract the combined output and suggestions from the response
+            gptOutput = response["choices"][0]["message"]["content"]
+
+            # Return the results as JSON
+            return jsonify({
+                "gptOutput": gptOutput
+            })
+        except Exception as e:
+            print(f"Error calling OpenAI API: {str(e)}")
+            return jsonify({
+                "gptOutput": "An error occurred while processing the request.",
+                "errOutput": "Error calling OpenAI API"
+            })
 
     else:
         #raise error

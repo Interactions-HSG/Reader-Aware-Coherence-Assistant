@@ -45,3 +45,19 @@ more realistic one: propose a realistic metrix
 requirements: repoduceable results; else: if not repoduceable, find some way to get coherence results(not)
 
 
+specification of the feature - use case diagram
+
+input
+reference paragraph -> a list of keywords
+user text input 
+
+middle process- split into sentences/clauses
+
+output
+-json {keyword: value;} based on scale
+-color for each sentence
+
+where are the diff functions ; refact the code to identify the modularization
+which part is highly depending on gpt; de the problem 
+take the code - make a function -modularization(a model that highly depends on gpt)
+add the feature, just add one dependency to gpt

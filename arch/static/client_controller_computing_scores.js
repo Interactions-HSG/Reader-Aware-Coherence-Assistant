@@ -5,6 +5,52 @@ const abstract = document.getElementById("abstract");
 //const recommendZone = document.getElementById('recommendZone');
 const Recommendation = document.getElementById("Recommendation");
 
+function colorCodingClauses(dictObj){
+//  FF0000(0),00FF00(1) //
+//1. to test if we have more than One value for the scores
+if(dictObj.scores.length == 0){
+dictObj.nScores=[]
+dictObj.cScores=[]
+return dictObj
+}
+if (dictObj.scores.length ==1){
+  minScore=dictObj.scores[0]
+  maxScore=dictObj.scores[0]
+  normalizedScore = [1*(minScore !=0)]
+}
+else{
+  //2. find the min and max in the list of scores
+minScore = Math.min(...dictObj.scores)
+maxScore = Math.max(...dictObj.scores)
+if (minScore == maxScore){
+  normalizedScore = (dictObj.scores).map(s=>1*(minScore !=0))
+}
+else{
+//3. normalized the score bt 0 and 1(if you want the precision *256)
+normalizedScore = (dictObj.scores).map(s=>(s-minScore)/(maxScore-minScore)) //2:03 change the way: function of all scores 
+}
+}
+//transform the json string in two: one array with a list of clauses, another with scores
+//dictObj = JSON.parse(jsonDict)
+
+//4. color-code to each normalized value(deduct the value from the red and add to the green)
+RED = 0xFF0000
+GREEN = 0x00FF00
+colorCodedScore = normalizedScore.map(n=>
+  (RED*(1-n))|(GREEN*n))
+//console.log(colorCodedScore)
+//console.log(normalizedScore)
+//5. return the result
+dictObj.nScores = normalizedScore
+dictObj.cScores = colorCodedScore
+return dictObj
+
+//0xFF0000 = 0xF00000 | 0x0F00000
+//console.log(jsonDict)
+}
+
+
+
 /*toggleSidebar.addEventListener('click', () => {
     sidebar.classList.toggle('hidden');
     });*/
@@ -78,9 +124,14 @@ document
           if (!response.ok) {
             throw new Error("Network response was not ok");
           }
-          return response.json();
+          jsonResponse = response.json()
+          //console.log(jsonResponse)
+          return jsonResponse;
         })
         .then((data) => {
+          //console.log(data)
+          dictObj = colorCodingClauses(data)
+          console.log(dictObj.cScores)
           // Update the Recommendation section with the server's response
           Recommendation.textContent =
             data.combinedOutput || "No suggestions received."; // Check if data.suggestions is defined
