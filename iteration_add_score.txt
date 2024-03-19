@@ -81,5 +81,9 @@ homework:
 can be sure can ask gpt to give us a list of values - compute bt one paragraph and another para
 - compute the scores
 - add new feature to validate -validate the response
-- implement the use of new feature (where to put this feature);
+    is effectively a list of value
+
+- use the new feature to the existing (where to put this feature)
+
+- color (user experience)
 
