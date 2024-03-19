@@ -2,7 +2,8 @@
 # 
 from flask_cors import CORS # This is generally important for online applications where you want your APIs to be accessible by other domains.
 from flask import Flask, render_template, request, jsonify, send_from_directory
-import requests as rq
+import requests as rq 
+from .ai_comm_utils import *
 
 from reader_profile import my_fetch
 
@@ -17,5 +18,6 @@ __all__ = ['app',
     'CORS',
     'Flask', 'render_template', 'request', 'jsonify',
     'rq',
-    'metrics'
+    'metrics',
+    'validate'
 ]

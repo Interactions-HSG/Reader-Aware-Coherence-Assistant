@@ -49,7 +49,8 @@ return dictObj
 //console.log(jsonDict)
 }
 
-
+//to predict the score, the behavior of the fuction; the format we dont expect
+//each time you ask for a score, you get a score 0318
 
 /*toggleSidebar.addEventListener('click', () => {
     sidebar.classList.toggle('hidden');

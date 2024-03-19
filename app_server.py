@@ -177,6 +177,45 @@ def my_demo_srv(): #new form with text area be selected_demo
                 "gptOutput": "An error occurred while processing the request.",
                 "errOutput": "Error calling OpenAI API"
             })
+    elif selected_demo == "validate response": #create new
+        param3 = request.json.get('param3') #input
+
+        try:
+            # build the prompt
+            prompt = f"in a range from 1 to 10, how {param1} is coherent to computer science.Return only one number."
+            # send the prompt to ChatGPT
+            v = False
+            limit = 3
+            while (not v) and (limit>-1): #continue to ask gpt
+                response = openai.ChatCompletion.create(
+                    model="gpt-3.5-turbo",
+                    messages=[
+                        {"role": "system", "content": "You are an assistant for analyzing coherence."},
+                        {"role": "user", "content": prompt}
+                    ],
+
+                )
+
+                # Extract the combined output and suggestions from the response
+                gptOutput = response["choices"][0]["message"]["content"]
+                # Check the validation of the response
+                v =validate(gptOutput,output_format='number')
+                limit -= 1
+            
+            #print(limit+1) 
+            if limit == -1:
+                raise Exception("Reach the limit of prompting, fail to find validated result")
+            # Return the results as JSON
+            return jsonify({
+                "gptOutput": gptOutput,
+                "valid":limit>-1 #we select the strict validate
+            })
+        except Exception as e:
+            print(f"Error calling OpenAI API: {str(e)}")
+            return jsonify({
+                "gptOutput": "An error occurred while processing the request.",
+                "errOutput": "Error calling OpenAI API"
+            })
 
     else:
         #raise error

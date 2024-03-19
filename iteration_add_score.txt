@@ -61,3 +61,12 @@ where are the diff functions ; refact the code to identify the modularization
 which part is highly depending on gpt; de the problem 
 take the code - make a function -modularization(a model that highly depends on gpt)
 add the feature, just add one dependency to gpt
+
+validation cycle
+when we ask the criteria from ai, we can specify the type of response we want, so ai could check the crieria
+
+we need an validation process to test the AI response, whether it will meet requirements
+(in terms of formats,limits). 
+
+- validated response
+- to adapt the function validate the text should contain a list of specific values 
