@@ -69,4 +69,17 @@ we need an validation process to test the AI response, whether it will meet requ
 (in terms of formats,limits). 
 
 - validated response
-- to adapt the function validate the text should contain a list of specific values 
+- to adapt the function that validates the text should contain a list of specific values 
+
+- validate it's the list of number - yes/no
+- change the text into a list of number with no error
+- go through each text and see it belongs a given range
+
+you can be sure your list, value you give the 
+
+homework:
+can be sure can ask gpt to give us a list of values - compute bt one paragraph and another para
+- compute the scores
+- add new feature to validate -validate the response
+- implement the use of new feature (where to put this feature);
+

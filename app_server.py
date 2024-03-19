@@ -182,7 +182,7 @@ def my_demo_srv(): #new form with text area be selected_demo
 
         try:
             # build the prompt
-            prompt = f"in a range from 1 to 10, how {param1} is coherent to computer science.Return only one number."
+            prompt = f"How each keyword of the following list is coherent to computer science: {param1}.\n Return only a list of numbers in a range from 1 to 10 separated by commas."
             # send the prompt to ChatGPT
             v = False
             limit = 3
@@ -199,10 +199,14 @@ def my_demo_srv(): #new form with text area be selected_demo
                 # Extract the combined output and suggestions from the response
                 gptOutput = response["choices"][0]["message"]["content"]
                 # Check the validation of the response
-                v =validate(gptOutput,output_format='number')
+                # print(gptOutput)
+                v = validate(gptOutput,output_format='list_of_numbers_in_range', params={
+                    'aRange': [1,2,3, 4, 5, 6, 7, 8, 9, 10], 
+                    'fctToNumber': int
+                })
                 limit -= 1
             
-            #print(limit+1) 
+            # print(limit+1) 
             if limit == -1:
                 raise Exception("Reach the limit of prompting, fail to find validated result")
             # Return the results as JSON
