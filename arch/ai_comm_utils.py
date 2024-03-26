@@ -32,7 +32,7 @@ def validate(text,output_format,params={}):
         valid = validate(text, 'list_of_numbers', params)
         if not valid: return False
         if valid[1] - valid[0] <= 1: return []
-
+        
         # 2. Extract the list of numbers as a substring of the text -> in python strings are arrays
         sListOfNumbers = text[valid[0]:valid[1]+1] #the begining and the end; we should have sth that can be transfromed into a list
         # print(sListOfNumbers)

@@ -114,34 +114,40 @@ def my_demo_srv(): #new form with text area be selected_demo
     elif selected_demo == 'extract keywords':
         #extractKeywords
 
-        # 3. Build the prompt and send it
-        try:
-            # build the prompt
-            prompt = f"Consider this paragraph: \"{param1}\" \nAbstract {param2} concepts that relate to the main subject of this paragraph. Return only a list of keywords separated by commas."
-            print(prompt)
-            # send the prompt to ChatGPT
-            response = openai.ChatCompletion.create(
-                model="gpt-3.5-turbo",
-                messages=[
-                    {"role": "system", "content": "You are an assistant for analyzing coherence."},
-                    {"role": "user", "content": prompt}
-                ],
+        # build the prompt
+        prompt = f"Consider this paragraph: \"{param1}\" \nAbstract {param2} concepts that relate to the main subject of this paragraph. Return only a list of keywords separated by commas."
+        output = ask_GPT(prompt)
 
-            )
+        return output
+        
+        # # 3. Build the prompt and send it
+        # try:
+        #     # build the prompt
+        #     prompt = f"Consider this paragraph: \"{param1}\" \nAbstract {param2} concepts that relate to the main subject of this paragraph. Return only a list of keywords separated by commas."
+        #     print(prompt)
+        #     # send the prompt to ChatGPT
+        #     response = openai.ChatCompletion.create(
+        #         model="gpt-3.5-turbo",
+        #         messages=[
+        #             {"role": "system", "content": "You are an assistant for analyzing coherence."},
+        #             {"role": "user", "content": prompt}
+        #         ],
 
-            # Extract the combined output and suggestions from the response
-            gptOutput = response["choices"][0]["message"]["content"]
+        #     )
 
-            # Return the results as JSON
-            return jsonify({
-                "gptOutput": gptOutput
-            })
-        except Exception as e:
-            print(f"Error calling OpenAI API: {str(e)}")
-            return jsonify({
-                "gptOutput": "An error occurred while processing the request.",
-                "errOutput": "Error calling OpenAI API"
-            })
+        #     # Extract the combined output and suggestions from the response
+        #     gptOutput = response["choices"][0]["message"]["content"]
+
+        #     # Return the results as JSON
+        #     return jsonify({
+        #         "gptOutput": gptOutput
+        #     })
+        # except Exception as e:
+        #     print(f"Error calling OpenAI API: {str(e)}")
+        #     return jsonify({
+        #         "gptOutput": "An error occurred while processing the request.",
+        #         "errOutput": "Error calling OpenAI API"
+        #     })
 
     elif selected_demo == 'ask measure':
         #ask GPT to measure
@@ -149,16 +155,114 @@ def my_demo_srv(): #new form with text area be selected_demo
         metric = request.json.get('metric') #coherence score
         scale = request.json.get('scale') #scale
 
-        # 3. Build the prompt and send it
-        try:
-            # build the prompt
-            prompt = f"Consider this list of keywords:{param1}\n Consider the paragraph:{param3}\n Return only a json structure with keywords as keys and the calculated {metric} as values within {scale}."
-            print(prompt)
-            # send the prompt to ChatGPT
+        # build the prompt
+        prompt = f"Consider this list of keywords:{param1}\n Consider the paragraph:{param3}\n Return only a json structure with keywords as keys and the calculated {metric} as values within {scale}."
+        output = ask_GPT(prompt)
+
+        return output
+
+        # # 3. Build the prompt and send it
+        # try:
+        #     # build the prompt
+        #     prompt = f"Consider this list of keywords:{param1}\n Consider the paragraph:{param3}\n Return only a json structure with keywords as keys and the calculated {metric} as values within {scale}."
+        #     print(prompt)
+        #     # send the prompt to ChatGPT
+        #     response = openai.ChatCompletion.create(
+        #         model="gpt-3.5-turbo",
+        #         messages=[
+        #             {"role": "system", "content": "You are an assistant for analyzing coherence."},
+        #             {"role": "user", "content": prompt}
+        #         ],
+
+        #     )
+
+        #     # Extract the combined output and suggestions from the response
+        #     gptOutput = response["choices"][0]["message"]["content"]
+
+        #     # Return the results as JSON
+        #     return jsonify({
+        #         "gptOutput": gptOutput
+        #     })
+        # except Exception as e:
+        #     print(f"Error calling OpenAI API: {str(e)}")
+        #     return jsonify({
+        #         "gptOutput": "An error occurred while processing the request.",
+        #         "errOutput": "Error calling OpenAI API"
+        #     })
+    elif selected_demo == "validate response": #create new
+        param3 = request.json.get('param3') #input
+
+        # build the prompt
+        prompt = f"How each keyword of the following list is coherent to computer science: {param1}.\n Return only a list of numbers in a range from 1 to 10 separated by commas."
+        output = ask_GPT(prompt,
+                output_format = 'list_of_numbers_in_range', output_format_params = {
+                    'aRange': [1,2,3, 4, 5, 6, 7, 8, 9, 10], 
+                    'fctToNumber': int
+                })
+
+        return output
+
+        # try:
+        #     # build the prompt
+        #     prompt = f"How each keyword of the following list is coherent to computer science: {param1}.\n Return only a list of numbers in a range from 1 to 10 separated by commas."
+        #     # send the prompt to ChatGPT
+        #     v = False
+        #     limit = 3
+        #     while (not v) and (limit>-1): #continue to ask gpt
+        #         response = openai.ChatCompletion.create(
+        #             model="gpt-3.5-turbo",
+        #             messages=[
+        #                 {"role": "system", "content": "You are an assistant for analyzing coherence."},
+        #                 {"role": "user", "content": prompt}
+        #             ],
+
+        #         )
+
+        #         # Extract the combined output and suggestions from the response
+        #         gptOutput = response["choices"][0]["message"]["content"]
+        #         # Check the validation of the response
+        #         # print(gptOutput)
+        #         v = validate(gptOutput,output_format='list_of_numbers_in_range', params={
+        #             'aRange': [1,2,3, 4, 5, 6, 7, 8, 9, 10], 
+        #             'fctToNumber': int
+        #         })
+        #         limit -= 1
+            
+        #     # print(limit+1) 
+        #     if limit == -1:
+        #         raise Exception("Reach the limit of prompting, fail to find validated result")
+        #     # Return the results as JSON
+        #     return jsonify({
+        #         "gptOutput": gptOutput,
+        #         "valid":limit>-1 #we select the strict validate
+        #     })
+        # except Exception as e:
+        #     print(f"Error calling OpenAI API: {str(e)}")
+        #     return jsonify({
+        #         "gptOutput": "An error occurred while processing the request.",
+        #         "errOutput": "Error calling OpenAI API"
+        #     })
+
+    else:
+        #raise error
+        response = '3'
+
+    return jsonify(response)
+
+def ask_GPT(prompt,
+    output_format = None, output_format_params = {},
+    prompting_limit = 3,
+    system_role = "You are an assistant for analyzing coherence.",
+    model="gpt-3.5-turbo"):
+    try:
+        v = False
+        limit = prompting_limit
+        while (not v) and (limit>-1): #continue to ask gpt
+            # send the prompt to ChatGPT 
             response = openai.ChatCompletion.create(
-                model="gpt-3.5-turbo",
+                model=model,
                 messages=[
-                    {"role": "system", "content": "You are an assistant for analyzing coherence."},
+                    {"role": "system", "content": system_role},
                     {"role": "user", "content": prompt}
                 ],
 
@@ -167,66 +271,24 @@ def my_demo_srv(): #new form with text area be selected_demo
             # Extract the combined output and suggestions from the response
             gptOutput = response["choices"][0]["message"]["content"]
 
-            # Return the results as JSON
-            return jsonify({
-                "gptOutput": gptOutput
-            })
-        except Exception as e:
-            print(f"Error calling OpenAI API: {str(e)}")
-            return jsonify({
-                "gptOutput": "An error occurred while processing the request.",
-                "errOutput": "Error calling OpenAI API"
-            })
-    elif selected_demo == "validate response": #create new
-        param3 = request.json.get('param3') #input
+            # Validate the output
+            if output_format:
+                v = validate(gptOutput, output_format, params=output_format_params)
+            else:
+                v = True
+            # Decrement the limit
+            limit -= 1
 
-        try:
-            # build the prompt
-            prompt = f"How each keyword of the following list is coherent to computer science: {param1}.\n Return only a list of numbers in a range from 1 to 10 separated by commas."
-            # send the prompt to ChatGPT
-            v = False
-            limit = 3
-            while (not v) and (limit>-1): #continue to ask gpt
-                response = openai.ChatCompletion.create(
-                    model="gpt-3.5-turbo",
-                    messages=[
-                        {"role": "system", "content": "You are an assistant for analyzing coherence."},
-                        {"role": "user", "content": prompt}
-                    ],
-
-                )
-
-                # Extract the combined output and suggestions from the response
-                gptOutput = response["choices"][0]["message"]["content"]
-                # Check the validation of the response
-                # print(gptOutput)
-                v = validate(gptOutput,output_format='list_of_numbers_in_range', params={
-                    'aRange': [1,2,3, 4, 5, 6, 7, 8, 9, 10], 
-                    'fctToNumber': int
-                })
-                limit -= 1
-            
-            # print(limit+1) 
-            if limit == -1:
-                raise Exception("Reach the limit of prompting, fail to find validated result")
-            # Return the results as JSON
-            return jsonify({
-                "gptOutput": gptOutput,
-                "valid":limit>-1 #we select the strict validate
-            })
-        except Exception as e:
-            print(f"Error calling OpenAI API: {str(e)}")
-            return jsonify({
-                "gptOutput": "An error occurred while processing the request.",
-                "errOutput": "Error calling OpenAI API"
-            })
-
-    else:
-        #raise error
-        response = '3'
-
-    return jsonify(response)
-
+        # Return the results as JSON
+        return jsonify({
+            "gptOutput": gptOutput
+        })
+    except Exception as e:
+        print(f"Error calling OpenAI API: {str(e)}")
+        return jsonify({
+            "gptOutput": "An error occurred while processing the request.",
+            "errOutput": "Error calling OpenAI API"
+        })
 
 
 def import_main_execution():
