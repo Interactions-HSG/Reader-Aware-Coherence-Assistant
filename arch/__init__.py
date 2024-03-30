@@ -5,7 +5,7 @@ from flask import Flask, render_template, request, jsonify, send_from_directory
 import requests as rq 
 from .ai_comm_utils import *
 
-from reader_profile import my_fetch
+from reader_profile import fetch_abstract, fetch_profiles
 
 from . import metrics
 
@@ -14,10 +14,12 @@ CORS(app)
 
 #  the is the declaration of the flask app
 __all__ = ['app',
-    'my_fetch', 
+    'fetch_abstract', 
+    'fetch_profiles',
     'CORS',
     'Flask', 'render_template', 'request', 'jsonify',
     'rq',
     'metrics',
-    'validate'
+    'validate',
+    'score_clauses',
 ]

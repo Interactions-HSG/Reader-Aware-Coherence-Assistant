@@ -49,27 +49,16 @@
     <form id="coherenceForm" method="post" enctype="application/json">
       <input type="hidden" name="api_key" value="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">
       <textarea id="writingZone" class="form-textarea w-full mb-4 p-2 border rounded" rows="6" placeholder="Writing zone..."></textarea>
-      <textarea id="abstract" class="form-textarea w-full mb-4 p-2 border rounded" rows="6" placeholder="Reader profile..."></textarea>
-
+      <br />
       <input type="text" id="personal_ids" placeholder="author_id"/>
+      <br />
       <button id="submitText" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none">
         Submit
-      </button>
-      <button id="fetchText" type ='button' class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none">
-        Fetch
       </button>
 
     </form>
 
     
-    
-    <div class="mt-4">
-      <h2 class="font-semibold mb-2">Coherence</h2>
-      <div id="recommendZone" class="p-4 bg-gray-200 rounded flex items-center">
-        <span class="coherence-icon mr-2">😂</span>
-        <span>Recommend zone...</span>
-      </div>
-    </div>
     
     <div class="mt-4">
       <h2 class="font-semibold mb-2">Suggestion</h2>
@@ -81,7 +70,7 @@
 
   <div id="sidebar" class="fixed top-0 right-0 w-64 h-full bg-black text-white p-4 hidden">
     <div class="flex flex-col items-center">
-      <h2 class="text-xl font-semibold mb-4">RPL</h2>
+      <h2 class="text-xl font-semibold mb-4">Reader Profile</h2>
       <div class="w-full mb-4">
         <div class="flex items-center justify-between p-2 mb-2 rounded bg-gray-800 cursor-pointer profile-button" data-profile="Layman">
           <span>Layman</span>

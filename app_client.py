@@ -5,7 +5,7 @@ from arch import *
 
 import os
 
-from reader_profile import my_fetch
+from reader_profile import fetch_abstract
 
 
 
@@ -28,6 +28,11 @@ def my_newTest2():
 @app.route('/newTest3')
 def my_newTest3():
         return render_template('ui_3.html')
+
+# Route for text labeling
+@app.route('/labeling')
+def execute_labeling(): #represent the functionality
+        return render_template('ui_text_labeling.html')
 
 @app.route('/test', methods=['GET', 'POST'])
 def my_test():

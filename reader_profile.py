@@ -54,7 +54,7 @@ def retrieve_and_merge_abstracts(api_key, author_id):
         print(f"An error occurred: {str(e)}")
 
 
-def my_fetch(author_id):
+def fetch_abstract(author_id): #why you do this:fetch abstract from a given id
     # Define the Semantic Scholar API endpoint for author's detailed papers
     api_url = f"https://api.semanticscholar.org/graph/v1/author/{author_id}/papers"
 
@@ -93,6 +93,9 @@ def my_fetch(author_id):
     
     except Exception as e:
         return f"An error occurred: {str(e)}"
+
+def fetch_profiles(ids): #fetch abstracts when user selects several ids; for the ask measure 
+    return [fetch_abstract(id) for id in ids]
 
 
 def main():

@@ -3,7 +3,7 @@ from arch import *
 import openai
 import os
 
-from reader_profile import my_fetch
+from reader_profile import fetch_abstract
 
 
 
@@ -17,7 +17,7 @@ if __name__ == '__main__':
 @app.route('/fetchGS', methods=['POST'])
 def route_my_fetch():
     personal_id = request.json.get('personal_id')
-    return my_fetch(personal_id)
+    return fetch_abstract(personal_id)
 
 
 # Define the route for POST request, this route is to handle the analysis of user input and abstract
@@ -189,7 +189,7 @@ def my_demo_srv(): #new form with text area be selected_demo
         #         "gptOutput": "An error occurred while processing the request.",
         #         "errOutput": "Error calling OpenAI API"
         #     })
-    elif selected_demo == "validate response": #create new
+    elif selected_demo == "validate response": #create new demo
         param3 = request.json.get('param3') #input
 
         # build the prompt
@@ -248,6 +248,34 @@ def my_demo_srv(): #new form with text area be selected_demo
         response = '3'
 
     return jsonify(response)
+
+
+
+
+
+@app.route('/labeling-srv', methods = ['POST']) 
+def create_labels(): #the protocol - a series of steps
+    # 0. Retrieve the values sent to the server
+    inputText = request.json.get('txt')
+    personalIDs = (request.json.get('ids')).split(',')
+
+    # 1. Retrieve the profiles
+    profiles = fetch_profiles(personalIDs)
+
+    # 2. Process the text
+    # Nothing to do
+
+    # 3. Ask measures
+    js_scores = score_clauses(inputText, params={
+        'ref_text': " ".join(profiles) #we have the retrieved profile as parameter, now we join the list of abstract as profiles
+    })
+
+    # 4. Return the scores computed for the input text
+    return js_scores
+
+
+
+
 
 def ask_GPT(prompt,
     output_format = None, output_format_params = {},
