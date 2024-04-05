@@ -21,5 +21,5 @@ __all__ = ['app',
     'rq',
     'metrics',
     'validate',
-    'score_clauses',
+    #'score_clauses', #lesson learnt: an unuseful redundancy(see metrics) which breaks a bit the global software design
 ]
