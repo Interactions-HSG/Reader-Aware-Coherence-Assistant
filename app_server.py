@@ -264,14 +264,15 @@ def create_labels(): #the protocol - a series of steps
 
     # 2. Process the text
     # Nothing to do
-
+    
     # 3. Ask measures
-    js_scores = score_clauses(inputText, params={
-        'ref_text': " ".join(profiles) #we have the retrieved profile as parameter, now we join the list of abstract as profiles
+    js_scores = metrics.score_clauses(inputText, params={ #access through package metrics, score_clauses is a function
+        'ref_text': " ".join(profiles), #we have the retrieved profile as parameter, now we join the list of abstract as profiles
+        'openai_api_key': openai.api_key
     })
 
     # 4. Return the scores computed for the input text
-    return js_scores
+    return jsonify(js_scores)
 
 
 

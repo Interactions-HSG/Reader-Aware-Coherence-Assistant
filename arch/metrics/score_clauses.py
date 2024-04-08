@@ -28,9 +28,11 @@ def score_clauses(text, params = {}):
 
     # Initialize a list to store scores
     scores = []
+    score_ranges = []
 
     for i, clause in enumerate(clauses):
         ratings = []
+        ratings_range = (0, 0)
 
         # include all the metrics we want to compute
         # This metric will use OpenAI
@@ -50,15 +52,20 @@ def score_clauses(text, params = {}):
         
         if 'ref_text'in params:
             ref_text = params['ref_text']
-            v=gpt_coherence_score_metric.score(clause,ref_text,params['openai_api_key'])  
+            v=gpt_coherence_score_metric.score(clause,ref_text,params['openai_api_key'])
             ratings.append(v)
 
+            ratings_range = (
+                ratings_range[0]+min(gpt_coherence_score_metric.COHERENCE_RANGE_ON_SUM),
+                ratings_range[1]+max(gpt_coherence_score_metric.COHERENCE_RANGE_ON_SUM)
+            )
 
         # Store the rating in the dictionary
-        scores.append(dim_reduction_mean(ratings)) #diff functions that reduce the dimentionality
+        scores.append(dim_reduction_mean(ratings)) #diff functions that reduces the dimentionality
+        score_ranges.append(ratings_range)
 
     # Return the scores as JSON
-    return {'scores':scores, 'texts':clauses} #last steppppp(0130)
+    return {'scores':scores, 'texts':clauses, 'ranges': score_ranges} #last steppppp(0130)
 
 
 

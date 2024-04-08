@@ -5,6 +5,10 @@ from arch import *
 import openai
 import re, json
 
+# Coherence range
+KEYWORDS_MAX_LIST = 3
+COHERENCE_RANGE_ON_SUM = [0, KEYWORDS_MAX_LIST]
+
 def score(text, ref_text, openai_api_key, params={}):#the score is the value you get when apply the metric
 
     # Use OpenAI to get a response from the model
@@ -12,8 +16,8 @@ def score(text, ref_text, openai_api_key, params={}):#the score is the value you
     # response = openai.ChatCompletion.create(**prompt)
 
     #1. extract the keywords from the reference text
-    keywords = extract_key_terms(ref_text, 3, openai_api_key)
-    print(keywords)
+    keywords = extract_key_terms(ref_text, KEYWORDS_MAX_LIST, openai_api_key)
+    #print(keywords)
     #print(text)
 
     #2. calculate the coherence scores
@@ -112,7 +116,7 @@ def calculate_coherence_scores(text, keywords, openai_api_key):
     # Initialize the OpenAI API with the provided API key
     openai.api_key = openai_api_key
 
-    # Define the prompt for computing coherence score
+    # Define the prompt for computing coherence score according to COHERENCE_RANGE
     prompt = (
         f"Consider this list of keywords:{','.join(keywords)}\n"
         f"Consider the paragraph: \"{text}\" \n"
