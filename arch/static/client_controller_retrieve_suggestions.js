@@ -1,9 +1,12 @@
+const the_selected_test = 'coherence-analysis2'; // don't need to extract ele from the form
+
 //const toggleSidebar = document.getElementById('toggleSidebar');
 //const sidebar = document.getElementById('sidebar');
 const writingZone = document.getElementById("writingZone");
 const abstract = document.getElementById("abstract");
 //const recommendZone = document.getElementById('recommendZone');
-const Recommendation = document.getElementById("Recommendation");
+const Recommendation = document.getElementById("Recommendation"); //extract the ele from the form
+
 
 /*toggleSidebar.addEventListener('click', () => {
     sidebar.classList.toggle('hidden');
@@ -30,12 +33,15 @@ const Recommendation = document.getElementById("Recommendation");
 document.getElementById("fetchText").addEventListener("click", () => {
   personal_id = document.getElementById("personal_ids");
   //we want to get a list of personal_ids
-  fetch("/fetchGS", {
+  //fetch("/fetchGS", {
+  fetch("/test-srv", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ personal_id: personal_id.value }), 
+    body: JSON.stringify({ 
+      selected_test: 'fetchGS', //hardcoded the selected_test
+      personal_id: personal_id.value }), 
   })
     .then((response) => {
       if (!response.ok) {
@@ -45,7 +51,7 @@ document.getElementById("fetchText").addEventListener("click", () => {
     })
     .then((data) => {
       console.log(data);
-      abstract.value = data; //show the abstract
+      abstract.value = data.text; //show the abstract
     })
     .catch((error) => {
       console.error("Error:", error);
@@ -63,27 +69,39 @@ document
     if (text && selectedProfile) {
       // Placeholder for coherence score logic
       const coherenceScore = "Coherence Score: 7/10";
-      recommendZone.innerHTML = `<span class="coherence-icon mr-2">😂</span>Based on the selected reader's profile, ${coherenceScore}`;
+      recommendZone.innerHTML = `<span class="coherence-icon mr-2">😂</span> ${coherenceScore}`;
 
       // Send a POST request to the Flask server
 
-      fetch("/api/coherence-analysis2", {
+      //fetch("/api/coherence-analysis2", {
+      fetch("/test-srv", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ txt: text, abstract: abstract.value }), // Send the user's input text // and the profile
+        body: JSON.stringify({ 
+          selected_test: the_selected_test, 
+          txt: text, abstract: abstract.value }), // Send the user's input text // and the profile
       })
         .then((response) => {
           if (!response.ok) {
             throw new Error("Network response was not ok");
           }
-          return response.json();
+          return response.json(); //we are responsible of the format
         })
         .then((data) => {
+          // Here 'data' corresponds to the actual responde from the server
+          // data{
+          //  text: ....,
+          //  dict: ...
+          //  err: ...
+          // }
+          //
           // Update the Recommendation section with the server's response
-          Recommendation.textContent =
-            data.combinedOutput || "No suggestions received."; // Check if data.suggestions is defined
+          if(!data.err)
+            Recommendation.textContent =
+              data.text || "No suggestions received."; // Check if data.suggestions is defined
+          else Recommendation.textContent = data.err;
         })
         .catch((error) => {
           console.error("Error:", error);

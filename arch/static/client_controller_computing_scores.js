@@ -1,3 +1,4 @@
+const the_selected_test = 'get_score';
 //const toggleSidebar = document.getElementById('toggleSidebar');
 //const sidebar = document.getElementById('sidebar');
 const writingZone = document.getElementById("writingZone");
@@ -77,12 +78,14 @@ return dictObj
 document.getElementById("fetchText").addEventListener("click", () => {
   personal_id = document.getElementById("personal_ids");
   //we want to get a list of personal_ids
-  fetch("/fetchGS", {
+  fetch("/test-srv", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ personal_id: personal_id.value }), 
+    body: JSON.stringify({ 
+      selected_test: 'fetchGS', //hardcoded the selected_test
+      personal_id: personal_id.value }), 
   })
     .then((response) => {
       if (!response.ok) {
@@ -92,7 +95,7 @@ document.getElementById("fetchText").addEventListener("click", () => {
     })
     .then((data) => {
       console.log(data);
-      abstract.value = data; //show the abstract
+      abstract.value = data.text; //show the abstract
     })
     .catch((error) => {
       console.error("Error:", error);
@@ -114,12 +117,14 @@ document
 
       // Send a POST request to the Flask server
 
-      fetch("/get_score", {
+      fetch("/test-srv", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ txt: text, abstract: abstract.value }), // Send the user's input text // and the profile
+        body: JSON.stringify({ 
+          selected_test: the_selected_test,
+          txt: text, abstract: abstract.value }), // Send the user's input text // and the profile
       })
         .then((response) => {
           if (!response.ok) {
@@ -131,7 +136,7 @@ document
         })
         .then((data) => {
           //console.log(data)
-          dictObj = colorCodingClauses(data)
+          dictObj = colorCodingClauses(data.dict)
           console.log(dictObj.cScores)
           // Update the Recommendation section with the server's response
           Recommendation.textContent =

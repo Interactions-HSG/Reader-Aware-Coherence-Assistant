@@ -14,63 +14,131 @@ if __name__ == '__main__':
 
 # Server side
 # Define a fetch route and use my_fetch function(defined in the reader_profile.py),to fetch data using personal_id
-@app.route('/fetchGS', methods=['POST'])
-def route_my_fetch():
-    personal_id = request.json.get('personal_id')
-    return fetch_abstract(personal_id)
+# @app.route('/fetchGS', methods=['POST'])
+# def route_my_fetch():
+#     personal_id = request.json.get('personal_id')
+#     return fetch_abstract(personal_id)
 
 
 # Define the route for POST request, this route is to handle the analysis of user input and abstract
-@app.route('/api/coherence-analysis2', methods=['POST'])
-def coherence_analysis2():
-    user_input = request.json.get('txt')
-    abstract = request.json.get('abstract')
+# @app.route('/api/coherence-analysis2', methods=['POST'])
+# def coherence_analysis2():
+#     user_input = request.json.get('txt')
+#     abstract = request.json.get('abstract')
 
-    try:
-        #coherence analysis between the two text
-        prompt = f"You are an assistant for analyzing coherence between user's text:\n\n{user_input}\n\n and the following abstracts: {abstract}. Find a section from the abstracts that matches the user's text."
+#     try:
+#         #coherence analysis between the two text
+#         prompt = f"You are an assistant for analyzing coherence between user's text:\n\n{user_input}\n\n and the following abstracts: {abstract}. Find a section from the abstracts that matches the user's text."
 
 
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
-            messages=[
-                {"role": "system", "content": "You are an assistant for analyzing coherence."},
-                {"role": "user", "content": prompt}
-            ],
+#         response = openai.ChatCompletion.create(
+#             model="gpt-3.5-turbo",
+#             messages=[
+#                 {"role": "system", "content": "You are an assistant for analyzing coherence."},
+#                 {"role": "user", "content": prompt}
+#             ],
 
-        )
+#         )
 
-        # Extract the combined_output and suggestions from the response
-        combined_output = response["choices"][0]["message"]["content"]
-        suggestions = "These are the suggestions." 
+#         # Extract the combined_output and suggestions from the response
+#         combined_output = response["choices"][0]["message"]["content"]
+#         suggestions = "These are the suggestions." 
 
-        # Return the results as JSON
-        return jsonify({
-            "combinedOutput": combined_output,
-            "suggestions": suggestions
+#         # Return the results as JSON
+#         return jsonify({
+#             "combinedOutput": combined_output,
+#             "suggestions": suggestions
+#         })
+#     except Exception as e:
+#         print(f"Error calling OpenAI API: {str(e)}")
+#         return jsonify({
+#             "combinedOutput": "An error occurred while processing the request.",
+#             "suggestions": "No suggestions received."
+#         })
+
+
+# @app.route('/get_score', methods=['POST'])
+# def get_score():
+#     user_input = request.json.get('txt')
+#     abstract = request.json.get('abstract')
+
+#     dictScores = metrics.score_clauses(user_input, params={
+#         'openai_api_key': openai.api_key,
+#         'ref_text': abstract
+#     })
+
+#     print(dictScores)
+
+#     return jsonify(dictScores)
+
+@app.route('/test-srv', methods = ['POST', 'GET'])
+def my_test_srv():
+    selected_test = request.json.get('selected_test')
+
+    if selected_test == 'coherence-analysis2':
+        user_input = request.json.get('txt')
+        abstract = request.json.get('abstract')
+
+        try:
+            #coherence analysis between the two text
+            prompt = f"You are an assistant for analyzing coherence between user's text:\n\n{user_input}\n\n and the following abstracts: {abstract}. Find a section from the abstracts that matches the user's text."
+
+
+            response = openai.ChatCompletion.create(
+                model="gpt-3.5-turbo",
+                messages=[
+                    {"role": "system", "content": "You are an assistant for analyzing coherence."},
+                    {"role": "user", "content": prompt}
+                ],
+
+            )
+
+            # Extract the combined_output and suggestions from the response
+            combined_output = response["choices"][0]["message"]["content"]
+            suggestions = "These are the suggestions." 
+
+            # create the response
+            srv_response = create_response(
+                textual_output= combined_output,
+                dict_data = { "combinedOutput": combined_output, "suggestions": suggestions }
+            )
+
+            # Return the results as JSON
+            return jsonify(srv_response)
+        except Exception as e:
+            print(f"Error calling OpenAI API: {str(e)}")
+            return jsonify(create_response(
+                textual_output= '',
+                dict_data= {
+                "combinedOutput": "An error occurred while processing the request.",
+                "suggestions": "No suggestions received."
+                },
+                error_msg= 'An error occurred while processing the request.'
+            ))
+    elif selected_test == 'fetchGS':
+        personal_id = request.json.get('personal_id')
+        # return a pre-formatted response
+        return create_response( textual_output= fetch_abstract(personal_id) ) 
+    elif selected_test == 'get_score':
+        user_input = request.json.get('txt')
+        abstract = request.json.get('abstract')
+
+        dictScores = metrics.score_clauses(user_input, params={
+            'openai_api_key': openai.api_key,
+            'ref_text': abstract
         })
-    except Exception as e:
-        print(f"Error calling OpenAI API: {str(e)}")
-        return jsonify({
-            "combinedOutput": "An error occurred while processing the request.",
-            "suggestions": "No suggestions received."
-        })
 
+        print(dictScores)
 
-@app.route('/get_score', methods=['POST'])
-def get_score():
-    user_input = request.json.get('txt')
-    abstract = request.json.get('abstract')
-
-    dictScores = metrics.score_clauses(user_input, params={
-        'openai_api_key': openai.api_key,
-        'ref_text': abstract
-    })
-
-    print(dictScores)
-
-    return jsonify(dictScores)
-
+        return jsonify(create_response(
+            textual_output= dictScores,
+            data= dictScores
+        ))
+           
+    else:
+        # return an error message
+        return jsonify({"err":'ERROR! [TODO: write a more detailed message]'})
+    
 @app.route('/demo-srv', methods = ['POST']) #to test one function or another: 1)check which demo we want to ask 2)check the parameter according to the functions 3) prepare the prompts 4)send the prompt 5) return the responses
 def my_demo_srv(): #new form with text area be selected_demo
     #check which demo we selected
@@ -319,6 +387,13 @@ def ask_GPT(prompt,
             "errOutput": "Error calling OpenAI API"
         })
 
+
+
+def create_response(textual_output = '', dict_data = {}, error_msg = ''): #the basic response that a server can return
+    return {
+        "text": textual_output,
+        "dict": dict_data,
+        "err": error_msg}
 
 def import_main_execution():
     print('app_server imported')
