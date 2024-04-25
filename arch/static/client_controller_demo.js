@@ -42,7 +42,7 @@ document
           // Update the Recommendation section with the server's response
           // console.log(data);
           response_data.innerHTML =
-            data.gptOutput || "No suggestions received."; // Check if data.suggestions is defined
+            data.text || "No suggestions received."; // Check if data.suggestions is defined
         })
         .catch((error) => {
           console.error("Error:", error);

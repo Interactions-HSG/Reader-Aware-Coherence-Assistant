@@ -2,17 +2,45 @@
 #and apply the critera(format,limit) of the ai response, see whether it passes or not
 import re
 
-def validate(text,output_format,params={}):
+from enum import Enum
+
+# # Class/OO way
+# class OutputFormat(Enum):
+#     Number = 1
+#     List_of_numbers = 2
+#     List_of_numbers_in_range = 3
+
+# Functional way
+SupportedOutputFormats = Enum('OutputFormats', [
+    'Number',
+    'List_of_numbers',
+    'List_of_numbers_in_range',
+])
+
+
+def validate(text, output_format, params={}):
+    """
+    """
+
+    if callable(output_format):
+        # output_format is a function (callable object).
+        # It allows a late-binding (at runtime) validation
+        output_format(text, params={})
+    elif not(type(output_format) == SupportedOutputFormats):
+        # raise an error
+        raise TypeError("'output_format' must be a OutputFormats (Enum) or a function.")
+
     bStrict = True #by default
     if 'strict'in params.keys():bStrict = params['strict']
-    if output_format == 'number':
+    
+    if output_format == SupportedOutputFormats.Number:
         temp = "(^\d+$)" #strict criteria
         if not bStrict:temp = "(\d+)" #define loose criteria check if at least one number is in the text
 
         res =re.search(temp,text)
         if res:return res.span() #if you find the number, where the position, and the size of the str
         return False #no result find
-    elif output_format == 'list_of_numbers': # to test if it is a list numbers (floats or integers)
+    elif output_format == SupportedOutputFormats.List_of_numbers: # to test if it is a list numbers (floats or integers)
         # 1. Define the template regexp for the list -> https://regex101.com/  and test [1.3,2,5.4]
         if bStrict: # the diff bt the strict and loose is the template
             temp = "^(\d+\.?\d*)?(\s*\,\s*(\d+\.?\d*))*$"
@@ -23,7 +51,7 @@ def validate(text,output_format,params={}):
         res = re.search(temp,text)
         if res:return res.span()
         return False
-    elif output_format == 'list_of_numbers_in_range':
+    elif output_format == SupportedOutputFormats.List_of_numbers_in_range:
         aRange = params['aRange']
         fctToNumber = int
         if 'fctToNumber' in params: fctToNumber = params['fctToNumber']

@@ -20,6 +20,6 @@ __all__ = ['app',
     'Flask', 'render_template', 'request', 'jsonify',
     'rq',
     'metrics',
-    'validate',
+    'SupportedOutputFormats','validate',
     #'score_clauses', #lesson learnt: an unuseful redundancy(see metrics) which breaks a bit the global software design
 ]
