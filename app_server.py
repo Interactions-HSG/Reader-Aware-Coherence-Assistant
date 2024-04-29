@@ -240,8 +240,8 @@ def ask_GPT(prompt,
     main goal of this system: analyzing the coherence between user inputs and 
     selected reader profiles.
 
-    As this function use OpenAI API to communicate with ChatGPT, the prompt and
-    responses should follow the specific documentation(link).
+    As this function uses OpenAI API to communicate with ChatGPT, the prompt and
+    responses should follow the specific documentation(https://platform.openai.com/docs/api-reference/messages/createMessage).
 
     By nature the GPT doesn't return deterministic responses (in terms of 
     format and content, for example). For this reason, this function operates 
@@ -296,10 +296,27 @@ def create_response(
     response_format = None):
     '''
     Create the response from openai.
-    This function should adapt to the prompt. Right now we don't know the prompt,
-    but it possible to access the prompt at runtime.
-    With a late binding to the response format, it's possible to access the
-    prompt at runtime, just before formating the response.
+    This function is designed to adapt to the prompt. Right now we don't know the prompt,
+    but it is possible to access the prompt at runtime. 
+    This is done by applying a technique called late binding. Late binding allows the function
+    to defer defining the response format until the moment it is executed. With a late binding 
+    to the response format, it's possible to access the prompt at runtime, just before formating
+    the response.
+    It allows the response format(a user defined format) to be flexibly defined according to the 
+    runtime conditions and prompt characteristics.
+
+    Parameters:
+    - textual_output (str): Main textual content of the response.
+    - dict_data (dict): Additional data provided in dictionary form.
+    - error_msg (str): Error message in case there is an error during processing.
+    - response_format (callable, optional): A callable that, if provided, formats the response 
+      according to specific requirements.
+
+    Returns:
+    - dict: A dictionary containing the 'text', 'dict', and 'err' keys with values. 
+      If 'response_format' is provided, returns the output of this callable, utilizing late 
+      binding to adapt to the runtime prompt.
+
     '''
     if response_format:
         return response_format(

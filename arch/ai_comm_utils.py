@@ -20,6 +20,17 @@ SupportedOutputFormats = Enum('OutputFormats', [
 
 def validate(text, output_format, params={}):
     """
+    [WHY we choose to implement this solution?]
+    In TLCA we have an input that needs to be computed into a certain format(a value, a list of values,
+    or a list of value in a range, etc) by GPT(through prompt), we should make sure the output format from 
+    GPT response is valid. So we define the function of validation(input text, output_format, optional params) 
+    as a new feature and test it.
+    [WHAT does this function do]
+    This function validates types of Output Format, to see if it is supported in the defined types.If a format is supported,
+    the function performs specific validations based on the format; if not, it raises a TypeError. This function 
+    also allows a late-binding validation at run time, through a callable object 'output_format'. Late binding allows 
+    the function to defer defining the response format until the moment it is executed.
+
     """
 
     if callable(output_format):
