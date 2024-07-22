@@ -2,7 +2,7 @@
 
 # Overview
 
-We propose a Reader-aware Congruence Assistant (RaCA), which supports writers to create texts that are adapted to target readers. Similar to user-centered design which is based on user profiles, RaCA features reader-centered writing through \emph{reader profiles} that are dynamically computed from information discovered through academic search engines.
+We propose a Reader-aware Congruence Assistant (RaCA), which supports writers to create texts that are adapted to target readers. Similar to user-centered design which is based on user profiles, RaCA features reader-centered writing through **reader profiles(RP)** that are dynamically computed from information discovered through academic search engines.
 Our assistant then leverages large language models to measure the congruence of a written text with a given reader profile, and provides feedback to the writer.
 We demonstrate our approach with an implemented prototype that illustrates how RaCA exploits information available on the Web to construct reader profiles, assesses writer-reader congruence and offers writers color-coded visual feedback accordingly.
 
