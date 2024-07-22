@@ -1,9 +1,10 @@
-# Text-Linker-Coherence-Assistant
+# Reader-Aware-Congruence-Assistant
 
 # Overview
 
-The Text-Linker Coherence Assistant(TLCA) is developed to assess and improve the coherence between user-submitted texts and specific reader profiles. Leveraging the text analysis feature of OpenAI API, the system fetches relevant text artifacts(considered as "reader profile") from external databases such as [Semantic Scholar](https://www.semanticscholar.org/), providing an analysis that includes actionable suggestions and co-occurrence score calculations. 
-TLCA is a tool for researchers, writers, and academics to tailor writings to match the intended audience's comprehension level, or enhance mutual knowledge adaptation.
+We propose a Reader-aware Congruence Assistant (RaCA), which supports writers to create texts that are adapted to target readers. Similar to user-centered design which is based on user profiles, RaCA features reader-centered writing through \emph{reader profiles} that are dynamically computed from information discovered through academic search engines.
+Our assistant then leverages large language models to measure the congruence of a written text with a given reader profile, and provides feedback to the writer.
+We demonstrate our approach with an implemented prototype that illustrates how RaCA exploits information available on the Web to construct reader profiles, assesses writer-reader congruence and offers writers color-coded visual feedback accordingly.
 
 👀 demo: [here](https://loom.com/share/folder/419e9f272b214d15a0823a5fdda41f14)
 
