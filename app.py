@@ -6,7 +6,9 @@ from arch import *
 
 import openai
 # Configure your OpenAI API key
-OPENAI_API_KEY = "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"  # Replace with your actual API key
+p = Path(__file__).parent / "API_Key.txt"
+with p.open() as f:
+    OPEN_API_KEY = f.read()
 openai.api_key = OPENAI_API_KEY
 
 
