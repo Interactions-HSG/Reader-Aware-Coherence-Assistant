@@ -32,7 +32,7 @@ if __name__ == '__main__':
 
 
 #         response = openai.ChatCompletion.create(
-#             model="gpt-3.5-turbo",
+#             model="gpt-4o-mini",
 #             messages=[
 #                 {"role": "system", "content": "You are an assistant for analyzing coherence."},
 #                 {"role": "user", "content": prompt}
@@ -85,7 +85,7 @@ def my_test_srv():
 
 
             response = openai.ChatCompletion.create(
-                model="gpt-3.5-turbo",
+                model="gpt-4o-mini",
                 messages=[
                     {"role": "system", "content": "You are an assistant for analyzing coherence."},
                     {"role": "user", "content": prompt}
@@ -229,7 +229,7 @@ def ask_GPT(prompt,
     response_format = None,
     prompting_limit = 3,
     system_role = "You are an assistant for analyzing coherence.",
-    model="gpt-3.5-turbo"):
+    model="gpt-4o-mini"):
     """
     ask_GPT sends a prompt to ChaGPT via OpenAI API
 

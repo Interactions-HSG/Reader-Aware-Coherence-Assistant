@@ -5,8 +5,10 @@
 from arch import *
 
 import openai
+from utils import load_config
 # Configure your OpenAI API key
-OPENAI_API_KEY = ""  # Replace with your actual API key
+config = load_config()
+OPENAI_API_KEY = config["OPENAI_API_KEY"]  # Replace with your actual API key
 openai.api_key = OPENAI_API_KEY
 
 

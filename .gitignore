@@ -2,3 +2,7 @@
 TLCA.code-workspace
 launch_help.txt
 __pycache__/
+config.json
+.idea/
+venv/
+*.pyc

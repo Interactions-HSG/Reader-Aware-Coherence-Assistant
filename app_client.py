@@ -13,7 +13,9 @@ if __name__ == '__main__':
     app = Flask(__name__)
     CORS(app)
 
-
+@app.route('/')
+def main_path():
+    return render_template('ui.html') #TODO: update
 
 
 # Client side, define the route (entry point)

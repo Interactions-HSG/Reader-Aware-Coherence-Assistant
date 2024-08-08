@@ -32,6 +32,8 @@ Also, you'll need an OpenAI API key to use the text analysis features.
    ```
    pip install Flask Flask-CORS OpenAI
 
+5. Create a file config.json (based on example example_config.json) and update the parameters with the proper values. 
+
 # Configuration
 
 Before running the application, configure your OpenAI API key in `app.py` by replacing `OPENAI_API_KEY` with your actual key.
