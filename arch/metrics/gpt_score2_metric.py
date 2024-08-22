@@ -27,7 +27,7 @@ def dummyFct(text, keywords):
         f"between the given keywords and the following text:\n{text}"
     # Use an appropriate model for text analysis
     response = openai.Completion.create(
-        engine="gpt-3.5-turbo-instruct",
+        engine="gpt-4o-mini-instruct",
         prompt=prompt,
         max_tokens=150
     )
@@ -64,7 +64,7 @@ def extract_key_terms(text, length, openai_api_key):
 
     # Use an appropriate model for text analysis
     response = openai.Completion.create(
-        engine="gpt-3.5-turbo-instruct",
+        engine="gpt-4o-mini-instruct",
         prompt=prompt,
         max_tokens=150
     )
@@ -79,7 +79,7 @@ def import_main_execution():
 
 def run_main_execution():
     # Example usage
-    api_key = "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"  # Replace with your actual API key
+    api_key = ""  # Replace with your actual API key
     sample_text = """
     Climate change refers to long-term shifts in temperatures and weather patterns. These shifts may be natural, 
     such as through variations in the solar cycle. But since the 1800s, human activities have been the main driver of 

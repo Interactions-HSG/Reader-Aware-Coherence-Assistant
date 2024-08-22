@@ -1,4 +1,3 @@
-#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
 
 import openai
 import json

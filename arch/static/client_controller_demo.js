@@ -8,6 +8,8 @@ const txt_input2 = document.getElementById('txt_input2')
 const metric = document.getElementById('metric');
 const scale = document.getElementById('scale');
 
+const provider = document.getElementById('provider');
+
 
 document
   .getElementById("demo_form")
@@ -29,7 +31,8 @@ document
           param2: nb_words.value,
           param3: txt_input2.value,
           metric: metric.value, 
-          scale: scale.value
+          scale: scale.value,
+          provider: provider.value
         }), 
       })
         .then((response) => {

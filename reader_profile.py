@@ -1,10 +1,12 @@
-#GoycwKdjBJ7oPPSnBIOV498hMHCivpiU6BjQ5YbZ
 #47299473(simon) 35278460(danai) 2191982532(jeremy)
 
 import requests
 import os
+from utils import load_config
 
-API_KEY_GOOGLE_SCHOLAR = "GoycwKdjBJ7oPPSnBIOV498hMHCivpiU6BjQ5YbZ"
+config = load_config()
+
+API_KEY_GOOGLE_SCHOLAR = config["API_KEY_GOOGLE_SCHOLAR"]
 
 
 def retrieve_and_merge_abstracts(api_key, author_id):

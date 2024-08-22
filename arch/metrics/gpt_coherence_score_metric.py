@@ -44,7 +44,7 @@ def dummyFct(text, keywords):
         f"between the given keywords and the following text:\n{text}"
     # Use an appropriate model for text analysis
     response = openai.Completion.create(
-        engine="gpt-3.5-turbo-instruct",
+        engine="gpt-4o-mini-instruct",
         prompt=prompt,
         max_tokens=150
     )
@@ -86,7 +86,7 @@ def extract_key_terms(text, length, openai_api_key):
 
     # Use an appropriate model for text analysis
     response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
+        model="gpt-4o-mini",
         messages=[
             {"role": "system", "content": "You are an assistant for analyzing coherence."},
             {"role": "user", "content": prompt}
@@ -125,7 +125,7 @@ def calculate_coherence_scores(text, keywords, openai_api_key):
 
     # Use an appropriate model for text analysis
     response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
+        model="gpt-4o-mini",
         messages=[
             {"role": "system", "content": "You are an assistant for analyzing coherence."},
             {"role": "user", "content": prompt}

@@ -7,6 +7,7 @@ from .ai_comm_utils import *
 
 from reader_profile import fetch_abstract, fetch_profiles
 
+from . import llm_providers
 from . import metrics
 
 app = Flask(__name__)
@@ -22,4 +23,5 @@ __all__ = ['app',
     'metrics',
     'SupportedOutputFormats','validate',
     #'score_clauses', #lesson learnt: an unuseful redundancy(see metrics) which breaks a bit the global software design
+    'llm_providers'
 ]

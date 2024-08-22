@@ -1,40 +1,45 @@
-#server script
-#configure the server-side code to handle the /api/coherence-analysis endpoint
-#this file handles the http requests and responses for the web app
+# server script
+# configure the server-side code to handle the /api/coherence-analysis endpoint
+# this file handles the http requests and responses for the web app
 from arch import *
 
 import os
 
 from reader_profile import fetch_abstract
 
-
-
 if __name__ == '__main__':
     app = Flask(__name__)
     CORS(app)
 
+
 @app.route('/')
-def main_path():
-    return render_template('ui.html') #TODO: update
+def main_page():
+    return render_template('ui.html')
 
 
 # Client side, define the route (entry point)
 @app.route('/newTest')
 def my_newTest():
-        return render_template('ui.html')
-# Define the route that render HTML template 
+    return render_template('ui.html')
+
+
+# Define the route that render HTML template
 @app.route('/newTest2')
 def my_newTest2():
-        return render_template('ui_2.html')
-#create the route for a new form computing the score
+    return render_template('ui_2.html')
+
+
+# create the route for a new form computing the score
 @app.route('/newTest3')
 def my_newTest3():
-        return render_template('ui_3.html')
+    return render_template('ui_3.html')
+
 
 # Route for text labeling
 @app.route('/labeling')
-def execute_labeling(): #represent the functionality
-        return render_template('ui_text_labeling.html')
+def execute_labeling():  # represent the functionality
+    return render_template('ui_text_labeling.html')
+
 
 @app.route('/test', methods=['GET', 'POST'])
 def my_test():
@@ -55,15 +60,16 @@ def my_test():
             user_input = request.form['txt']
             selected_profile = request.form['profile']
             url = 'http://localhost:5000/api/coherence-analysis'
-            data = {'txt': user_input,'profile':selected_profile}
+            data = {'txt': user_input, 'profile': selected_profile}
             response = rq.post(url, json=data)
 
             return response.json()
 
     return "Invalid request"
 
-#add a route for testing two functions for demo
-@app.route('/demo', methods=['GET', 'POST']) 
+
+# add a route for testing two functions for demo
+@app.route('/demo', methods=['GET', 'POST'])
 def my_demo():
     return render_template('demo.html')
 
@@ -71,9 +77,13 @@ def my_demo():
 def import_main_execution():
     print('app_client imported')
 
+
 def run_main_execution():
     app.run(debug=True)
 
+
 # designed to run independently, notice the 'if name == 'main' part here
-if __name__ == '__main__': run_main_execution()
-else: import_main_execution()
+if __name__ == '__main__':
+    run_main_execution()
+else:
+    import_main_execution()
