@@ -137,24 +137,24 @@ def route_my_fetch():
   #      # return an error message
    #     return jsonify({"err":'ERROR! [TODO: write a more detailed message]'})
     
-@app.route('/demo-srv', methods = ['POST']) #to test one function or another: 1)check which demo we want to ask 2)check the parameter according to the functions 3) prepare the prompts 4)send the prompt 5) return the responses
-def my_demo_srv(): #new form with text area be selected_demo
+@app.route('/test-srv', methods = ['POST']) #to test one function or another: 1)check which test we want to ask 2)check the parameter according to the functions 3) prepare the prompts 4)send the prompt 5) return the responses
+def my_test_srv(): #new form with text area be selected_demo
     #check which demo we selected
-    selected_demo = request.json.get('selected_demo')
+    selected_test = request.json.get('selected_test')
     param1 = request.json.get('param1') #input
     param2 = request.json.get('param2') #nb_of_words
 
     #provider_name = request.json.get('provider') #name of the provider
 
     result = ''
-    if selected_demo == 'generate paragraph':
+    if selected_test == 'generate paragraph':
         #generateParagraph
         query = f"give me a paragraph in {param2} words, which relates to {param1}"
         output = ask_llm_provider(query=query)
         
         return output
 
-    elif selected_demo == 'extract keywords':
+    elif selected_test == 'extract keywords':
         #extractKeywords
         # build the prompt
         query = f"Consider this paragraph: \"{param1}\" \nAbstract {param2} concepts that relate to the main subject of this paragraph. Return only a list of keywords separated by commas."
@@ -162,7 +162,7 @@ def my_demo_srv(): #new form with text area be selected_demo
 
         return output
         
-    elif selected_demo == 'ask measure':
+    elif selected_test == 'ask measure':
         #ask GPT to measure
         param3 = request.json.get('param3') #input
         metric = request.json.get('metric') #coherence score
@@ -174,7 +174,7 @@ def my_demo_srv(): #new form with text area be selected_demo
 
         return output
 
-    elif selected_demo == "validate response": #create new demo
+    elif selected_test == "validate response": #create new demo
         param3 = request.json.get('param3') #input
 
         # build the prompt
@@ -188,6 +188,14 @@ def my_demo_srv(): #new form with text area be selected_demo
 
         return output
 
+    elif selected_test == 'fetch GS':
+        rp_id = request.json.get('rp_id')
+        print(rp_id)
+        
+        return jsonify({"text":fetch_abstract(rp_id)})
+
+    elif selected_test == 'compute congruence':
+        pass
     else:
         #raise error
         result = '3'
@@ -198,6 +206,31 @@ def my_own_oFormat(text, params={}):
     return False
 
 
+@app.route('/demo-srv', methods = ['POST']) #to test one function or another: 1)check which test we want to ask 2)check the parameter according to the functions 3) prepare the prompts 4)send the prompt 5) return the responses
+def my_demo_srv(): #new form with text area be selected_demo
+    #check which demo we selected
+    selected_demo = request.json.get('selected_demo')
+    param1 = request.json.get('param1') #input
+    param2 = request.json.get('param2') #nb_of_words
+
+    #provider_name = request.json.get('provider') #name of the provider
+
+    result = ''
+
+    if selected_demo == '':
+        pass
+    elif selected_demo == 'fetch GS':
+        rp_id = request.json.get('rp_id')
+        print(rp_id)
+        return jsonify({"text":fetch_abstract(rp_id)})
+    else:
+        #raise error
+        result = '3'
+
+    return jsonify(result)
+
+def my_own_oFormat(text, params={}):
+    return False
 
 #@app.route('/labeling-srv', methods = ['POST'])
 #def create_labels(): #the protocol - a series of steps

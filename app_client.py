@@ -41,38 +41,42 @@ def execute_labeling():  # represent the functionality
     return render_template('ui_text_labeling.html')
 
 
+# @app.route('/test', methods=['GET', 'POST'])
+# def my_test():
+#     if request.method == 'GET':
+#         return '''
+#         <html>
+#         <head><meta name="Content-Type" value="application/json" /></head>
+#         <body>
+#             <form action="/test" method="post" enctype="application/json">
+#                 <input type="text" name="txt" id="txt" />
+#                 <input type="submit" />
+#             </form>
+#         </body>
+#         </html>
+#         '''
+#     else:  # The method is POST
+#         if 'txt' in request.form:
+#             user_input = request.form['txt']
+#             selected_profile = request.form['profile']
+#             url = 'http://localhost:5000/api/coherence-analysis'
+#             data = {'txt': user_input, 'profile': selected_profile}
+#             response = rq.post(url, json=data)
+
+#             return response.json()
+
+#     return "Invalid request"
+
+
+# add a route for testing two functions for development test
 @app.route('/test', methods=['GET', 'POST'])
 def my_test():
-    if request.method == 'GET':
-        return '''
-        <html>
-        <head><meta name="Content-Type" value="application/json" /></head>
-        <body>
-            <form action="/test" method="post" enctype="application/json">
-                <input type="text" name="txt" id="txt" />
-                <input type="submit" />
-            </form>
-        </body>
-        </html>
-        '''
-    else:  # The method is POST
-        if 'txt' in request.form:
-            user_input = request.form['txt']
-            selected_profile = request.form['profile']
-            url = 'http://localhost:5000/api/coherence-analysis'
-            data = {'txt': user_input, 'profile': selected_profile}
-            response = rq.post(url, json=data)
+    return render_template('test.html')
 
-            return response.json()
-
-    return "Invalid request"
-
-
-# add a route for testing two functions for demo
+# Route for demo
 @app.route('/demo', methods=['GET', 'POST'])
 def my_demo():
     return render_template('demo.html')
-
 
 def import_main_execution():
     print('app_client imported')

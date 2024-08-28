@@ -1,0 +1,57 @@
+<html>
+<body>
+<!-- ADD button (to display the sidebar) -->
+<button id="toggleSidebar" class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 focus:outline-none">
+    Add
+  </button>
+
+<!-- Textbox with id: personal_ids -->
+<input type="text" id="personal_ids" placeholder="author_id"/>
+
+<!-- Sidebar -->
+<div id="sidebar" class="fixed top-0 right-0 w-64 h-full bg-black text-white p-4 hidden">
+    <div class="flex flex-col items-center">
+      <h2 class="text-xl font-semibold mb-4">Reader Profile</h2>
+      <div class="w-full mb-4">
+        <div class="flex items-center justify-between p-2 mb-2 rounded bg-gray-800 cursor-pointer profile-button" data-profile="Layman">
+          <span>Layman (no id)</span>
+          <span class="text-purple-400">🧐</span>
+        </div>
+        <div class="flex items-center justify-between p-2 mb-2 rounded bg-gray-800 cursor-pointer profile-button"
+         data-profile="Jeremy"
+         data-personal_id="2191982532">
+          <span>Alice</span>
+          <span class="text-purple-400">🧙‍♂️</span>
+        </div>
+        <div class="flex items-center justify-between p-2 mb-2 rounded bg-gray-800 cursor-pointer profile-button" 
+          data-profile="Danai"
+          data-personal_id="35278460">
+          <span>Benjamin</span>
+          <span class="text-yellow-400">🐱</span>
+        </div>
+        <div class="flex items-center justify-between p-2 mb-2 rounded bg-gray-800 cursor-pointer profile-button" 
+          data-profile="Simon"
+          data-personal_id="47299473">
+          <span>Liam</span>
+          <span class="text-green-400">👨‍🍳</span>
+        </div>
+        <div class="flex items-center justify-between p-2 mb-2 rounded bg-gray-800 cursor-pointer profile-button" data-profile="peer discovery">
+          <span>Peer Discovery</span>
+          <span class="text-purple-400">🧞‍♂️</span>
+        </div>
+      
+        <!-- Other reader profiles here -->
+      </div>
+      <div class="text-center text-gray-400">
+        ...
+      </div>
+      
+    </div>
+</div>
+
+<!-- Script -->
+<script src="{{url_for('static', filename='ui_controller_profile_sidebar.js')}}"></script>
+
+</body>
+</html>
+
