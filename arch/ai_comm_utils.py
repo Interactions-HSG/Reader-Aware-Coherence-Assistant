@@ -15,6 +15,7 @@ SupportedOutputFormats = Enum('OutputFormats', [
     'Number',
     'List_of_numbers',
     'List_of_numbers_in_range',
+    'List_of_words',
 ])
 
 
@@ -36,7 +37,7 @@ def validate(text, output_format, params={}):
     if callable(output_format):
         # output_format is a function (callable object).
         # It allows a late-binding (at runtime) validation
-        output_format(text, params={})
+        return output_format(text, params)
     elif not(type(output_format) == SupportedOutputFormats):
         # raise an error
         raise TypeError("'output_format' must be a OutputFormats (Enum) or a function.")

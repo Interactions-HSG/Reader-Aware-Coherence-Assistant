@@ -152,7 +152,7 @@ def my_test_srv(): #new form with text area be selected_demo
         query = f"give me a paragraph in {param2} words, which relates to {param1}"
         output = ask_llm_provider(query=query)
         
-        return output
+        return jsonify(output)
 
     elif selected_test == 'extract keywords':
         #extractKeywords
@@ -160,7 +160,7 @@ def my_test_srv(): #new form with text area be selected_demo
         query = f"Consider this paragraph: \"{param1}\" \nAbstract {param2} concepts that relate to the main subject of this paragraph. Return only a list of keywords separated by commas."
         output = ask_llm_provider(query=query)
 
-        return output
+        return jsonify(output)
         
     elif selected_test == 'ask measure':
         #ask GPT to measure
@@ -172,7 +172,7 @@ def my_test_srv(): #new form with text area be selected_demo
         query = f"Consider this list of keywords:{param1}\n Consider the paragraph:{param3}\n Return only a json structure with keywords as keys and the calculated {metric} as values within {scale}."
         output = ask_llm_provider(query=query)
 
-        return output
+        return jsonify(output)
 
     elif selected_test == "validate response": #create new demo
         param3 = request.json.get('param3') #input
@@ -186,7 +186,7 @@ def my_test_srv(): #new form with text area be selected_demo
                     'fctToNumber': int
                 })
 
-        return output
+        return jsonify(output)
 
     elif selected_test == 'fetch GS':
         rp_id = request.json.get('rp_id')
@@ -195,7 +195,13 @@ def my_test_srv(): #new form with text area be selected_demo
         return jsonify({"text":fetch_abstract(rp_id)})
 
     elif selected_test == 'compute congruence':
-        pass
+        rp_id = request.json.get('rp_id')
+        abstract = fetch_abstract(rp_id)
+
+        dScore = ask_metrics(param1, params={'ref_text': abstract})
+        # print(f'dScore: {dScore}')
+
+        return jsonify({"text":dScore['scores']})
     else:
         #raise error
         result = '3'
@@ -219,10 +225,26 @@ def my_demo_srv(): #new form with text area be selected_demo
 
     if selected_demo == '':
         pass
+    elif selected_demo == 'generate paragraph':
+        #generateParagraph
+        query = f"give me a paragraph in {param2} words, which relates to {param1}"
+        output = ask_llm_provider(query=query)
+        
+        return jsonify(output)
+
     elif selected_demo == 'fetch GS':
         rp_id = request.json.get('rp_id')
         print(rp_id)
         return jsonify({"text":fetch_abstract(rp_id)})
+        
+    elif selected_demo == 'compute congruence':
+        rp_id = request.json.get('rp_id')
+        abstract = fetch_abstract(rp_id)
+
+        dScore = ask_metrics(param1, params={'ref_text': abstract})
+        # print(f'dScore: {dScore}')
+
+        return jsonify({"text":dScore['scores']})
     else:
         #raise error
         result = '3'
@@ -268,6 +290,27 @@ def ask_llm_provider(query,
         output_format=output_format, output_format_params=output_format_params,
         response_format=response_format
     )
+
+
+def ask_metrics(inputText, params):
+    # Access to the current llm provider
+    manager = llm_providers.provider_manager
+    provider = manager.get_provider()
+
+    params['provider'] = provider
+
+    # From previous tests on computing metrics:_
+    #     dictScores = metrics.score_clauses(user_input, params={
+    #         'openai_api_key': openai.api_key,
+    #         'ref_text': abstract
+    #     })
+    #
+    # Result from calling score_clauses:_
+    # return {'scores':scores, 'texts':clauses, 'ranges': score_ranges}
+    # 
+    dScores = metrics.score_clauses(inputText, params)
+    
+    return dScores
 
 
 # def ask_GPT(prompt,

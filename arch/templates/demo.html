@@ -13,7 +13,7 @@
     font-family: 'Open Sans', sans-serif;
   }
   .funny-logo {
-    background-image: url('https://source.unsplash.com/featured/?funny');
+    background-image: url('https://picsum.photos/800/600');
     background-size: cover;
     background-position: center;
     height: 100px;
@@ -27,6 +27,9 @@
     background-color: #4CAF50; /* Change the background color to green */
     color: white; /* Change the text color to white */
   }
+
+  .unuseful{ display: none; }
+  .error-msg{ font-weight: bold; color: red;}
 </style>
 </head>
 <body class="bg-white text-gray-800">
@@ -34,14 +37,14 @@
 <div class="flex flex-col items-center justify-center min-h-screen p-4">
   <header class="text-2xl font-bold text-green-500 mb-8">
     <div class="funny-logo rounded-full mb-4"></div>
-    Your Coherence Assistant
+    Your Congruence Assistant
   </header>
 
   <div class="w-full max-w-4xl bg-gray-100 p-6 rounded-lg shadow-lg">
     <div class="flex justify-between items-center mb-4">
-      <h1 class="text-xl font-semibold">TLCA</h1>
+      <h1 class="text-xl font-semibold">RaCA</h1>
       <button id="toggleSidebar" class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 focus:outline-none">
-        Add
+        Add Profile
       </button>
     </div>
 
@@ -49,15 +52,31 @@
     <form id="demo_form" method="post" enctype="application/json">
       <input type="hidden" name="api_key" value="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">
 
-      <label for='selected_demo'>Demo:</label><input type="text" id="selected_demo" placeholder="write a demo"/><br />
-      <label for='txt_input'>Text Input1:</label><br /><textarea id="txt_input" class="form-textarea w-full mb-4 p-2 border rounded" rows="3" placeholder="text input..."></textarea><br />
-      <label for='txt_input2'>Text Input2:</label><br /><textarea id="txt_input2" class="form-textarea w-full mb-4 p-2 border rounded" rows="3" placeholder="text input..."></textarea><br />
+      <label for='selected_demo'>Demo:</label>
+        <select name="demos" id="selected_demo">
+          <option value="">--Please choose a demo--</option>
+          <option value="generate paragraph">generate paragraph</option>
+          <option value="compute congruence">compute congruence</option>
+          <option value="fetch GS">fetch GS</option>
+        </select>
+      <br />
+      <div class="text-input input1">
+        <label for='txt_input'>Text Input1:</label><br />
+        <textarea id="txt_input" class="form-textarea w-full mb-4 p-2 border rounded" rows="3" placeholder="text input..."></textarea><br />
+      </div>
+
+      <div class="text-input input2 unuseful">
+        <label for='txt_input2'>Text Input2:</label><br />
+        <textarea id="txt_input2" class="form-textarea w-full mb-4 p-2 border rounded" rows="3" placeholder="text input..."></textarea><br />
+      </div>
 
       <label for='nb_of_words'>Number of Words:</label><input type="text" id="nb_of_words" value="100"/><br />
-      <label for='metric'>Metric:</label><input type="text" id="metric" value="coherence score"/><br />
       <label for='scale'>Scale:</label><input type="text" id="scale" value="[-1,0,1]"/><br />
-      <label for='provider'>Provider:</label><input type="text" id="provider" value="default_provider"/><br />
 
+      <div class="unuseful">
+        <label for='metric'>Metric:</label><input type="text" id="metric" value="coherence score"/><br />
+        <label for='provider'>Provider:</label><input type="text" id="provider" value="default_provider"/><br />
+      </div>
       <!-- Hidden box for fetching RP -->
       <input type="hidden" id="personal_ids" placeholder="author_id"/>
 
@@ -74,9 +93,8 @@
     </div>
     
     <div class="mt-4">
-      <h2 class="font-semibold mb-2">Suggestion</h2>
-      <div id="Recommendation" class="p-4 bg-gray-200 rounded">
-        <!-- Refined text will be displayed here -->
+      <h2 class="font-semibold mb-2">Error</h2>
+      <div id="error" class="error-msg p-4 bg-gray-200 rounded">
       </div>
     </div>
   </div>

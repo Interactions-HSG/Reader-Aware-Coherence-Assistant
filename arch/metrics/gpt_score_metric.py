@@ -1,27 +1,39 @@
 #to score a piece of text 
 
-#accept a p of text
+#accept a piece of text
 import openai
 import re 
 
-def score(text, topic, openai_api_key):
+def score(text, topic, provider):
     '''
     why write this function(-1)
     '''
-    prompt = {
-            "model": "gpt-4o-mini",
-            "messages": [
-                {"role": "system", "content": "You are a helpful assistant."},
-                {"role": "user", "content": f"Please rate the clarity and understandability of the following clause on a scale of 1 to 10 for {topic}: {text}"} #the profile is part of the prompt 'for a hiphop artist'
-            ]
-        }
 
-    # Use OpenAI to get a response from the model
-    openai.api_key = openai_api_key
-    response = openai.ChatCompletion.create(**prompt)
+    query = f"Please rate the clarity and understandability of the following clause on a scale of 1 to 10 for {topic}: {text}" #the profile is part of the prompt 'for a hiphop artist'
 
-    # Extract the numeric rating from the response using regular expressions
-    match = re.search(r'\b\d+(?:\.\d+)?\b', response['choices'][0]['message']['content'])
+    output = provider.ask_model(query)
+        # return {
+        #     "text": textual_output,
+        #     "dict": dict_data,
+        #     "err": error_msg
+        # }
+
+    match = re.search(r'\b\d+(?:\.\d+)?\b', output['text'])
+
+    # prompt = {
+    #         "model": "gpt-4o-mini",
+    #         "messages": [
+    #             {"role": "system", "content": "You are a helpful assistant."},
+    #             {"role": "user", "content": f"Please rate the clarity and understandability of the following clause on a scale of 1 to 10 for {topic}: {text}"} #the profile is part of the prompt 'for a hiphop artist'
+    #         ]
+    #     }
+
+    # # Use OpenAI to get a response from the model
+    # openai.api_key = openai_api_key
+    # response = openai.ChatCompletion.create(**prompt)
+
+    # # Extract the numeric rating from the response using regular expressions
+    # match = re.search(r'\b\d+(?:\.\d+)?\b', response['choices'][0]['message']['content'])
 
 
     if match:

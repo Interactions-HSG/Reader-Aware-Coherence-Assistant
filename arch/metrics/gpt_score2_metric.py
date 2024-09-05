@@ -1,18 +1,18 @@
 #to score a piece of text 
 
 
-#accept a p of text
+#accept a piece of text
 import openai
 import re 
 
-def score(text, ref_text, openai_api_key):#the score is the value you get when apply the metric
+def score(text, ref_text, provider):#the score is the value you get when apply the metric
 
     # Use OpenAI to get a response from the model
-    # openai.api_key = openai_api_key
+    # provider: current llm provider
     # response = openai.ChatCompletion.create(**prompt)
 
     #1. extract the keywords from the reference text
-    keywords = extract_key_terms(ref_text, 15, openai_api_key)
+    keywords = extract_key_terms(ref_text, 15, provider)
     print(keywords)
     print(text)
     #2. identify the existence keywords in the text, and how many
@@ -20,17 +20,23 @@ def score(text, ref_text, openai_api_key):#the score is the value you get when a
 
     return value
 
-def dummyFct(text, keywords):
-    #2. identify the coherence between keywords and the text
-    prompt = f"Be the list of keywords: {keywords}\n" + \
-        "Return a response limited to one decimal value from 0 to 10 that represents the coherence score " +\
-        f"between the given keywords and the following text:\n{text}"
-    # Use an appropriate model for text analysis
-    response = openai.Completion.create(
-        engine="gpt-4o-mini-instruct",
-        prompt=prompt,
-        max_tokens=150
-    )
+
+# def dummyFct(text, keywords):
+
+
+#     #2. identify the coherence between keywords and the text
+#     prompt = f"Be the list of keywords: {keywords}\n" + \
+#         "Return a response limited to one decimal value from 0 to 10 that represents the coherence score " +\
+#         f"between the given keywords and the following text:\n{text}"
+#     # Use an appropriate model for text analysis
+#     response = openai.Completion.create(
+#         engine="gpt-4o-mini-instruct",
+#         prompt=prompt,
+#         max_tokens=150
+#     )
+
+
+
 
     print(response.choices[0])
 
@@ -41,35 +47,50 @@ def dummyFct(text, keywords):
     return value[0]
 
 
-def extract_key_terms(text, length, openai_api_key):
+def extract_key_terms(text, length, provider):
     """
     This function takes a text paragraph and uses OpenAI's GPT model to extract key terms and concepts.
 
     Args:
     text (str): The text paragraph to be analyzed.
-    openai_api_key (str): The OpenAI API key.
+    provider (LLMPrivder): The current LLM provider (we use the abstract LLMProvider structure).
     
     Returns:
     str: The extracted key terms and concepts.
     """
-    # Initialize the OpenAI API with the provided API key
-    openai.api_key = openai_api_key
 
-    # Define the prompt for extracting key terms and concepts
-    prompt = (
+    query = (
         f"Return a list of the {length} most relevant keywords separated by commas " 
         "from the following paragraph:\n"
         f"{text}"
     )
 
-    # Use an appropriate model for text analysis
-    response = openai.Completion.create(
-        engine="gpt-4o-mini-instruct",
-        prompt=prompt,
-        max_tokens=150
-    )
+    output = provider.ask_model(query)
+        # return {
+        #     "text": textual_output,
+        #     "dict": dict_data,
+        #     "err": error_msg
+        # }
+
+
+    # # Initialize the OpenAI API with the provided API key
+    # openai.api_key = openai_api_key
+
+    # # Define the prompt for extracting key terms and concepts
+    # prompt = (
+    #     f"Return a list of the {length} most relevant keywords separated by commas " 
+    #     "from the following paragraph:\n"
+    #     f"{text}"
+    # )
+
+    # # Use an appropriate model for text analysis
+    # response = openai.Completion.create(
+    #     engine="gpt-4o-mini-instruct",
+    #     prompt=prompt,
+    #     max_tokens=150
+    # )
     
-    return [x.strip() for x in response.choices[0].text.split(',')]
+    return [x.strip() for x in output['text'].split(',')]
 
 
 

@@ -91,6 +91,8 @@ class OpenAIClient(LLMProvider):
                     stream=False
                 )
 
+                #print(f'GPT response:\n{response}\n-------------------------\n')
+
                 # Extract the combined output from the response according to the 
                 # OpenAI API documentation
                 # old version: model_output = response["choices"][0]["message"]["content"]
@@ -108,16 +110,16 @@ class OpenAIClient(LLMProvider):
             last_model_output = model_output
 
             # Return the response as JSON
-            return jsonify(self.create_response(
+            return self.create_response(
                 textual_output=last_model_output,
                 response_format=response_format
-            ))
+            )
         except Exception as e:
             print(f"Error calling OpenAI API: {str(e)}")
-            return jsonify(self.create_response(
+            return self.create_response(
                 textual_output="An error occurred while processing the request.",
                 error_msg="Error calling OpenAI API",
-                response_format=response_format))
+                response_format=response_format)
 
     def create_response(self,
                         textual_output='', dict_data={}, error_msg='',

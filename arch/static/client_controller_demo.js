@@ -1,7 +1,10 @@
 // Add an event listener to the form submission 
 //define diff objects
-const selected_demo = document.getElementById('selected_demo');
 const response_data = document.getElementById('response');
+const error_msg = document.getElementById('error');
+
+const selected_demo = document.getElementById('selected_demo');
+
 const txt_input = document.getElementById('txt_input')
 const nb_words = document.getElementById('nb_of_words')
 const txt_input2 = document.getElementById('txt_input2')
@@ -50,8 +53,8 @@ document
             data.text || "No suggestions received."; // Check if data.suggestions is defined
         })
         .catch((error) => {
-          console.error("Error:", error);
-          //Recommendation.textContent = "An error occurred: " + error.message; // Display a more detailed error message
+          //console.error("Error:", error);
+          error_msg.innerHTML = "An error occurred: " + error.message; // Display a more detailed error message
         });
 
     }

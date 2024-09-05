@@ -16,14 +16,19 @@ def dim_reduction_mean(ratings):
 def score_clauses(text, params = {}):
 
     # Check if API keys are provided in the parameters
-    bUseOpenAI = 'openai_api_key' in params.keys()
-    if bUseOpenAI:
-        openai.api_key = params['openai_api_key']
+    bUseLLMProvider = 'provider' in params.keys()
+    if bUseLLMProvider:
+        provider = params['provider']
+        #openai.api_key = params['openai_api_key']
     # ... Same for other type of API
 
 
     # Split the text into clauses or sentences
-    clauses = text.split(". ")
+    _clauses = text.split(". ")
+    clauses = []
+    for i, clause in enumerate(_clauses):
+        clause = " ".join(clause.split())
+        if clause: clauses.append(clause)
 
     # Initialize a list to store scores
     scores = []
@@ -35,23 +40,23 @@ def score_clauses(text, params = {}):
 
         # include all the metrics we want to compute
         # This metric will use OpenAI
-        if bUseOpenAI:
+        if bUseLLMProvider:
             topic = 'a hip-hop artist'
-            #ratings.append(gpt_score_metric.score(clause, topic, params['openai_api_key']))
+            #ratings.append(gpt_score_metric.score(clause, topic, provider))
 
-        if bUseOpenAI:
+        if bUseLLMProvider:
             topic2 = 'a classic composer'
-            #ratings.append(gpt_score_metric.score(clause, topic2, params['openai_api_key']))
+            #ratings.append(gpt_score_metric.score(clause, topic2, provider))
 
         if 'ref_text'in params:
             ref_text = params['ref_text']
-            #v=gpt_score2_metric.score(clause, ref_text, params['openai_api_key']) #putting the score in the vector
+            #v=gpt_score2_metric.score(clause, ref_text, provider) #putting the score in the vector
             #print(v)
             #ratings.append(v)
         
         if 'ref_text'in params:
             ref_text = params['ref_text']
-            v=gpt_coherence_score_metric.score(clause,ref_text,params['openai_api_key'])
+            v=gpt_coherence_score_metric.score(clause, ref_text, provider)
             ratings.append(v)
 
             ratings_range = (
@@ -62,6 +67,8 @@ def score_clauses(text, params = {}):
         # Store the rating in the dictionary
         scores.append(dim_reduction_mean(ratings)) #diff functions that reduces the dimentionality
         score_ranges.append(ratings_range)
+
+        print(f'{clause}: {scores[i]}')
 
     # Return the scores as JSON
     return {'scores':scores, 'texts':clauses, 'ranges': score_ranges} #last steppppp(0130)

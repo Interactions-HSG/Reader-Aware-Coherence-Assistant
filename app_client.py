@@ -1,6 +1,3 @@
-# server script
-# configure the server-side code to handle the /api/coherence-analysis endpoint
-# this file handles the http requests and responses for the web app
 from arch import *
 
 import os
