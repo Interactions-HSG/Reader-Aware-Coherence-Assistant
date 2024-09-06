@@ -1,5 +1,5 @@
 {
-  "LLM_API_KEY": "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",
+  "LLM_API_KEY": "",
   "LLM_PROVIDER": "openai",
   "LLM_MODEL": "gpt-4o-mini",
   "API_KEY_GOOGLE_SCHOLAR": ""
