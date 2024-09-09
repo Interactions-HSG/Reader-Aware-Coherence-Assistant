@@ -189,16 +189,37 @@ def my_test_srv(): #new form with text area be selected_demo
         return jsonify(output)
 
     elif selected_test == 'fetch GS':
-        rp_id = request.json.get('rp_id')
-        print(rp_id)
+        rp_ids = (request.json.get('rp_id')).split(',')
+        print(rp_ids)
         
-        return jsonify({"text":fetch_abstract(rp_id)})
-
+        if len(rp_ids) == 1: return jsonify({"text":fetch_abstract(rp_ids)})
+        return  jsonify({"text":fetch_profiles(rp_ids)})
+    
     elif selected_test == 'compute congruence':
-        rp_id = request.json.get('rp_id')
-        abstract = fetch_abstract(rp_id)
+        # Compute the congruence.
+        # /!\ Only the first profile is used /!\
+        rp_ids = (request.json.get('rp_id')).split(',')
+        abstract = fetch_abstract(rp_ids[0])
 
         dScore = ask_metrics(param1, params={'ref_text': abstract})
+        # print(f'dScore: {dScore}')
+
+        return jsonify({"text":dScore['scores']})
+    elif selected_test == 'labeling':
+        # Note: the labeling is exactly like computing the congruence, but it 
+        # accepts several reader profiles. The main difference comes at the 
+        # level of the client controller which use the score to color the 
+        # input text.
+
+        # Retrieve information from several reader profiles
+        rp_ids = (request.json.get('rp_id')).split(',')
+        abstracts = fetch_profiles(rp_ids)
+
+        # processing the text - if needed.
+        # (nothing to do)
+        
+        # Compute the score
+        dScore = ask_metrics(param1, params={'ref_text': abstracts})
         # print(f'dScore: {dScore}')
 
         return jsonify({"text":dScore['scores']})
