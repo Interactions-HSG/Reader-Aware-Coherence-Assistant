@@ -80,13 +80,13 @@ document
             Recommendation.innerHTML = errMsg;
             throw new Error(errMsg);
           }
-          print(response);
+          
           return response.json();
         })
         .then((data) => {
           //console.log(data);
 
-          dictObj = colorCodingClauses(data);
+          dictObj = colorCodingClauses(data.data);
           //console.log(dictObj.cScores);
           
           // Update the Recommendation section with the server's response
@@ -94,7 +94,7 @@ document
           for (idx = 0; idx < dictObj.texts.length; idx++) {
             t = dictObj.texts[idx];
             c = dictObj.cScores[idx];
-            htmlText = '<span style="color:#' + dNh(c, 6) + '">' + t + "<span>";
+            htmlText = '<p><span style="color:#' + dNh(c, 6) + '">' + t + "<span></p>";
             Recommendation.innerHTML += htmlText;
           } //span is a container you can add CSS
 

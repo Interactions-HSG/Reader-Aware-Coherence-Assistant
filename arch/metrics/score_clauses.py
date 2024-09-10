@@ -29,6 +29,9 @@ def score_clauses(text, params = {}):
     for i, clause in enumerate(_clauses):
         clause = " ".join(clause.split())
         if clause: clauses.append(clause)
+    #
+    # [20240909] split remove the '.' in all clauses except the last one.
+    # TODO: find a better way to split the clauses.
 
     # Initialize a list to store scores
     scores = []
@@ -59,19 +62,22 @@ def score_clauses(text, params = {}):
             v=gpt_coherence_score_metric.score(clause, ref_text, provider)
             ratings.append(v)
 
-            ratings_range = (
-                ratings_range[0]+min(gpt_coherence_score_metric.COHERENCE_RANGE_ON_SUM),
-                ratings_range[1]+max(gpt_coherence_score_metric.COHERENCE_RANGE_ON_SUM)
-            )
+            ratings_range = (-1,1)
+            #ratings_range = (
+            #    ratings_range[0]+min(gpt_coherence_score_metric.COHERENCE_RANGE_ON_SUM),
+            #    ratings_range[1]+max(gpt_coherence_score_metric.COHERENCE_RANGE_ON_SUM)
+            #)
 
         # Store the rating in the dictionary
         scores.append(dim_reduction_mean(ratings)) #diff functions that reduces the dimentionality
+        # [20240909] Not possible to adapt rating range dynamically
+        # Manual adaptation
         score_ranges.append(ratings_range)
 
         print(f'{clause}: {scores[i]}')
 
     # Return the scores as JSON
-    return {'scores':scores, 'texts':clauses, 'ranges': score_ranges} #last steppppp(0130)
+    return {'scores':scores, 'texts':clauses, 'ranges': score_ranges} #last step(0130)
 
 
 

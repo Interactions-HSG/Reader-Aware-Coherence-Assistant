@@ -222,10 +222,10 @@ def my_test_srv(): #new form with text area be selected_demo
         dScore = ask_metrics(param1, params={'ref_text': abstracts})
         # print(f'dScore: {dScore}')
 
-        return jsonify({"text":dScore['scores']})
+        return jsonify({"data":dScore})
     else:
         #raise error
-        result = '3'
+        result = 'No test defined or test name unknown'
 
     return jsonify(result)
 
@@ -268,33 +268,32 @@ def my_demo_srv(): #new form with text area be selected_demo
         return jsonify({"text":dScore['scores']})
     else:
         #raise error
-        result = '3'
+        result = 'No demo defined or demo name unknown'
 
     return jsonify(result)
 
 def my_own_oFormat(text, params={}):
     return False
 
-#@app.route('/labeling-srv', methods = ['POST'])
-#def create_labels(): #the protocol - a series of steps
- #   # 0. Retrieve the values sent to the server
-  #  inputText = request.json.get('txt')
-   # personalIDs = (request.json.get('ids')).split(',')
-#
- #   # 1. Retrieve the profiles
-    #profiles = fetch_profiles(personalIDs)
-#
- #   # 2. Process the text
-  #  # Nothing to do
-   #
-    ## 3. Ask measures
-    #js_scores = metrics.score_clauses(inputText, params={ #access through package metrics, score_clauses is a function
-     #   'ref_text': " ".join(profiles), #we have the retrieved profile as parameter, now we join the list of abstract as profiles
-      #  'openai_api_key': openai.api_key
-    #})
-#
- #   # 4. Return the scores computed for the input text
-  #  return jsonify(js_scores)
+@app.route('/labeling-srv', methods = ['POST'])
+def create_labels(): #the protocol - a series of steps
+    # 0. Retrieve the values sent to the server
+    inputText = request.json.get('txt')
+    personalIDs = (request.json.get('ids')).split(',')
+
+    # 1. Retrieve the profiles
+    profiles = fetch_profiles(personalIDs)
+
+    # 2. Process the text
+    # Nothing to do
+   
+    # 3. Ask measures
+    dScore = ask_metrics(inputText, params={ #access through package metrics, score_clauses is a function
+        'ref_text': " ".join(profiles) #we have the retrieved profile as parameter, now we join the list of abstract as profiles
+    })
+
+    # 4. Return the scores computed for the input text
+    return jsonify({"data":dScore})
 
 
 
